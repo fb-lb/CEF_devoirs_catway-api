@@ -1,17 +1,6 @@
 const User = require('../models/user');
-
-function getInformations(req) {
-    let informations = {
-        successAddMessage: req.session.successAddMessage || null,
-        errorAddMessage: req.session.errorAddMessage || null
-    }; 
-    return informations;
-};
-
-function resetInformations(req) {
-    req.session.successAddMessage = null;
-    req.session.errorAddMessage = null;
-}
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 async function add(req, res, next) {
     const temp = ({
@@ -23,18 +12,57 @@ async function add(req, res, next) {
 
     try {
         let user = await User.create(temp);
-        req.session.successAddMessage = `L'utilisateur ${user.firstName} ${user.lastName} a bien été ajouté`;
-        return res.redirect('/users');
+        successAddMessage = { 'message': `L'utilisateur ${user.firstName} ${user.lastName} a bien été ajouté` }
+        return res.status(201).json(successAddMessage);
     } catch (error) {
         if (error.message.includes("duplicate key error collection")) {
-            req.session.errorAddMessage = "Un utilisateur utilise déjà cette adresse mail";
-            return res.redirect('/users');
+            errorAddMessage = { 'message': 'Un utilisateur utilise déjà cette adresse mail' };
+            return res.status(403).json(errorAddMessage);
         } else {
             let userName = `${req.body.firstName} ${req.body.lastName}`;
-            req.session.errorAddMessage = `L'utilisateur ${userName} n'a pas pu être ajouté`;
-            return res.redirect('/users');
+            errorAddMessage = { 'message': `L'utilisateur ${userName} n'a pas pu être ajouté. Assurez-vous d'avoir rempli tous les champs.` };
+            return res.status(400).json(errorAddMessage);
         };       
     }
 }
 
-module.exports = { getInformations, resetInformations, add};
+async function authenticate(req, res, next) {
+    const { email, password } = req.body;
+
+    try {
+        let user = await User.findOne({ email: email }, '-__v -createdAt -updatedAt');
+
+        if (user) {
+            bcrypt.compare(password, user.password, (err, response) => {
+                if (err) {
+                    throw new Error(err);
+                }
+                if (response) {
+                    delete user._doc.password;
+
+                    const expireIn = 24 * 60 * 60;
+                    const token = jwt.sign({
+                        user: user
+                    },
+                    process.env.SECRET_KEY,
+                    {
+                        expiresIn: expireIn
+                    });
+                    res.header('Authorization', 'Bearer ' + token);
+                    let message = { 'message': 'Vous êtes connectés'};
+                    return res.status(200).json(message);
+                }
+                let message = { 'message': 'Email et/ou mot de passe incorrect'};
+                return res.status(403).json(message);
+            });
+        } else {
+            let message = { 'message': 'Email incorrect'};
+            return res.status(404).json(message);
+        }
+    } catch (error) {
+        let message = { 'message': 'Utilisateur introuvable, avez-vous rempli tous les champs ?'};
+        return res.status(501).json(message);
+    }
+};
+
+module.exports = { add, authenticate};

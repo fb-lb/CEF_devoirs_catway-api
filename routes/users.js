@@ -3,11 +3,11 @@ var router = express.Router();
 const service = require('../services/users');
 
 router.get('/', function(req, res, next) {
-  const informations = service.getInformations(req);
-  service.resetInformations(req);
-  res.render('users', informations);
+  res.render('users', { scripts: ['/javascripts/users.js'] });
 });
 
 router.post('/', service.add);
+
+//router.post('/authenticate', service.authenticate);
 
 module.exports = router;
