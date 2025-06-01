@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <% var scripts = scripts || []; %>
+  <% var styles = styles || []; %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <title>Express</title>
+  <% styles.forEach(function(href) { %>
+    <link rel="stylesheet" href="<%= href %>">
+  <% }) %>
+  <% scripts.forEach(function(src) { %>
+    <script src="<%= src %>" defer></script>
+  <% }) %>
+</head>
+<body>
+  <%- include('header')%>
+  <main>
+    <%- body%>
+  </main>
+</body>
+</html>
