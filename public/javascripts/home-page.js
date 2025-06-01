@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if the user is connected
     let authenticateForm = document.getElementById('authenticateForm');
     let deconnectionForm = document.getElementById('deconnectionForm');
-    let navLinkConnected = document.getElementsByClassName('connected');
     let userFirstNameCookie = getCookieValue('firstName') == null ? null : decodeURIComponent(getCookieValue('firstName'));
     let userLastNameCookie = getCookieValue('lastName') == null ? null : decodeURIComponent(getCookieValue('lastName'));
     if (userFirstNameCookie != null && userLastNameCookie != null) {
@@ -38,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessageElement('deconnectionForm', 'messageId', 'success', message);
     } else {
         deconnectionForm.classList.add('hidden');
-        for (let i=0; i<navLinkConnected.length; i++) {
-            navLinkConnected.item(i).classList.add('hidden');
-        };
+        // for (let i=0; i<navLinkConnected.length; i++) {
+        //     navLinkConnected.item(i).classList.add('hidden');
+        // };
     }
 
     // Management of the authentification form submission
@@ -76,30 +75,32 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     // Management of deconnection form submission
-        deconnectionForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+    let navLinkConnected = document.getElementsByClassName('connected');
 
-            try {
-                const response = await fetch(deconnectionForm.action, {
-                    method: deconnectionForm.method,
-                    headers: {'Content-Type': 'application/JSON'},
-                    credentials: 'include'
-                })
+    deconnectionForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-                const data = await response.json();
-                if (response.status == 200) {
-                    authenticateForm.classList.toggle('hidden');
-                    deconnectionForm.classList.toggle('hidden');
-                    for (let i=0; i<navLinkConnected.length; i++) {
-                        navLinkConnected.item(i).classList.toggle('hidden');
-                    };
-                    addMessageElement('authenticateForm', 'messageId', 'success', data.message);
-                } else {
-                    addMessageElement('deconnectionForm', 'messageId', 'error', 'Une erreur est survenue veuillez recharger votre page.');
-                }
-            } catch (error) {
-                let message = '2Nous ne parvenons pas à nous connecter au serveur. Vérifiez votre connexion internet.';
-                addMessageElement('deconnectionForm', 'messageId', 'error', message);
+        try {
+            const response = await fetch(deconnectionForm.action, {
+                method: deconnectionForm.method,
+                headers: {'Content-Type': 'application/JSON'},
+                credentials: 'include'
+            })
+
+            const data = await response.json();
+            if (response.status == 200) {
+                authenticateForm.classList.toggle('hidden');
+                deconnectionForm.classList.toggle('hidden');
+                for (let i=0; i<navLinkConnected.length; i++) {
+                    navLinkConnected.item(i).classList.toggle('hidden');
+                };
+                addMessageElement('authenticateForm', 'messageId', 'success', data.message);
+            } else {
+                addMessageElement('deconnectionForm', 'messageId', 'error', 'Une erreur est survenue veuillez recharger votre page.');
             }
-        });
+        } catch (error) {
+            let message = '2Nous ne parvenons pas à nous connecter au serveur. Vérifiez votre connexion internet.';
+            addMessageElement('deconnectionForm', 'messageId', 'error', message);
+        }
+    });
 })

@@ -83,7 +83,6 @@ async function authenticate(req, res, next) {
     }
 };
 
-/** @param {import('express').Response} res */
 function logout(req, res, next) {
     res.clearCookie('token', {
         sameSite: 'Lax',
@@ -101,7 +100,6 @@ function logout(req, res, next) {
         secure: process.env.SECURE_COOKIE,
     });
     let message = { 'message': 'Vous êtes bien déconnecté.' };
-
     return res.status(200).json(message);
 };
 
