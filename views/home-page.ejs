@@ -1,0 +1,18 @@
+<% layout('layout') %>
+
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<form action="/users/authenticate" method="post" id="authenticateForm">
+  <div>
+    <label for="email">E-mail</label>
+    <input type="text" name="email" id="email" value="jean-dupont@gmail.com">
+  </div>
+  <div>
+    <label for="password">Mot de passe</label>
+    <input type="password" name="password" id="password" value="1234">
+  </div>
+  <button type="submit">Se connecter</button>
+</form>
+<form action="/users/logout" method="post" id="deconnectionForm">
+  <button type="submit">Déconnexion</button>
+</form>

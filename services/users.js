@@ -24,7 +24,7 @@ async function add(req, res, next) {
             return res.status(400).json(errorAddMessage);
         };       
     }
-}
+};
 
 async function authenticate(req, res, next) {
     const { email, password } = req.body;
@@ -40,7 +40,7 @@ async function authenticate(req, res, next) {
                 if (response) {
                     delete user._doc.password;
 
-                    const expireIn = 24 * 60 * 60;
+                    const expireIn = 60 * 60 * 24;
                     const token = jwt.sign({
                         user: user
                     },
@@ -48,8 +48,26 @@ async function authenticate(req, res, next) {
                     {
                         expiresIn: expireIn
                     });
-                    res.header('Authorization', 'Bearer ' + token);
-                    let message = { 'message': 'Vous êtes connectés'};
+
+                    res.cookie('token', token, {
+                        sameSite: 'Lax',
+                        httpOnly: true,
+                        secure: process.env.SECURE_COOKIE,
+                        maxAge: 1000 * 60 * 60 * 24
+                    });
+                    res.cookie('firstName', user.firstName, {
+                        sameSite: 'Lax',
+                        httpOnly: false,
+                        secure: process.env.SECURE_COOKIE,
+                        maxAge: 1000 * 60 * 60 * 24
+                    });
+                    res.cookie('lastName', user.lastName, {
+                        sameSite: 'Lax',
+                        httpOnly: false,
+                        secure: process.env.SECURE_COOKIE,
+                        maxAge: 1000 * 60 * 60 * 24
+                    });
+                    let message = { 'message': `Vous êtes connectés ${user.firstName} ${user.lastName}.`};
                     return res.status(200).json(message);
                 }
                 let message = { 'message': 'Email et/ou mot de passe incorrect'};
@@ -65,4 +83,26 @@ async function authenticate(req, res, next) {
     }
 };
 
-module.exports = { add, authenticate};
+/** @param {import('express').Response} res */
+function logout(req, res, next) {
+    res.clearCookie('token', {
+        sameSite: 'Lax',
+        httpOnly: true,
+        secure: process.env.SECURE_COOKIE,
+    });
+    res.clearCookie('firstName', {
+        sameSite: 'Lax',
+        httpOnly: true,
+        secure: process.env.SECURE_COOKIE,
+    });
+    res.clearCookie('lastName', {
+        sameSite: 'Lax',
+        httpOnly: true,
+        secure: process.env.SECURE_COOKIE,
+    });
+    let message = { 'message': 'Vous êtes bien déconnecté.' };
+
+    return res.status(200).json(message);
+};
+
+module.exports = { add, authenticate, logout};
