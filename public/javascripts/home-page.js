@@ -34,12 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userFirstNameCookie != null && userLastNameCookie != null) {
         authenticateForm.classList.add('hidden');
         let message = `Vous êtes connecté en tant que ${userFirstNameCookie} ${userLastNameCookie}.`;
-        addMessageElement('deconnectionForm', 'messageId', 'success', message);
+        addMessageElement('deconnectionForm', 'deconnectionMessageId', 'success', message);
     } else {
         deconnectionForm.classList.add('hidden');
-        // for (let i=0; i<navLinkConnected.length; i++) {
-        //     navLinkConnected.item(i).classList.add('hidden');
-        // };
     }
 
     // Management of the authentification form submission
@@ -65,11 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const userLastName = decodeURIComponent(getCookieValue('lastName'));
                 window.location.href = '/tableau-de-bord';
             } else {
-                addMessageElement('authenticateForm', 'messageId', 'error', data.message);
+                addMessageElement('authenticateForm', 'authenticateMessageId', 'error', data.message);
             }
         } catch (error) {
-            console.log(error);
-            addMessageElement('authenticateForm', 'messageId', 'error', '1Nous ne parvenons pas à nous connecter au serveur. Vérifiez votre connexion internet.');
+            addMessageElement('authenticateForm', 'authenticateMessageId', 'error', 'Nous ne parvenons pas à nous connecter au serveur. Vérifiez votre connexion internet.');
         }
     });
     
@@ -94,13 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (let i=0; i<navLinkConnected.length; i++) {
                     navLinkConnected.item(i).classList.toggle('hidden');
                 };
-                addMessageElement('authenticateForm', 'messageId', 'success', data.message);
+                addMessageElement('authenticateForm', 'authenticateMessageId', 'success', data.message);
             } else {
-                addMessageElement('deconnectionForm', 'messageId', 'error', 'Une erreur est survenue veuillez recharger votre page.');
+                addMessageElement('deconnectionForm', 'deconnectionMessageId', 'error', 'Une erreur est survenue veuillez recharger votre page.');
             }
         } catch (error) {
-            let message = '2Nous ne parvenons pas à nous connecter au serveur. Vérifiez votre connexion internet.';
-            addMessageElement('deconnectionForm', 'messageId', 'error', message);
+            let message = 'Nous ne parvenons pas à nous connecter au serveur. Vérifiez votre connexion internet.';
+            addMessageElement('deconnectionForm', 'deconnectionMessageId', 'error', message);
         }
     });
 })

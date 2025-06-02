@@ -11,7 +11,6 @@ function getCookieValue(cookieName) {
 document.addEventListener('DOMContentLoaded', () => {
     let navLinkConnected = document.getElementsByClassName('connected');
     let firstNameCookie = getCookieValue('firstName');
-    console.log(firstNameCookie);
     if (firstNameCookie == null) {
         for (let i=0; i<navLinkConnected.length; i++) {
             navLinkConnected.item(i).classList.add('hidden');

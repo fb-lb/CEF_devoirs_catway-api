@@ -27,7 +27,7 @@
     </section>
     <section>
         <h3>Modifier un utilisateur</h3>
-        <form action="/users/update" method="post" id="updateUserForm">
+        <form action="/users" method="post" id="updateUserForm">
             <div>
                 <label for="updateIdUser">Identifiant</label>
                 <input type="text" name="updateIdUser" id="updateIdUser">
@@ -55,6 +55,16 @@
                 <small>(Veuillez renseigner le mot de passe actuel pour que le nouveau mot de passe soit pris en compte)</small>
             </div>
             <button type="submit">Enregistrer les modifications</button>
+        </form>
+    </section>
+    <section>
+        <h3>Supprimer un utilisateur</h3>
+        <form action="/users" methode="post" id="deleteUserForm">
+            <div>
+                <label for="deleteIdUser">Identifiant</label>
+                <input type="text" name="deleteIdUser" id="deleteIdUser">
+            </div>
+            <button type="submit">Supprimer cet utilisateur</button>
         </form>
     </section>
 </section>
