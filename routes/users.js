@@ -1,14 +1,15 @@
 var express = require('express');
 var router = express.Router();
 const service = require('../services/users');
+const private = require('../middlewares/private');
 
-/*
-router.get('/', function(req, res, next) {
-  res.render('users', { scripts: ['/javascripts/users.js'] });
-});
-*/
+router.post('/', private.checkJWT, service.add);
 
-router.post('/', service.add);
+router.get('/:id', private.checkJWT, service.get);
+
+router.patch('/:id', private.checkJWT, service.update);
+
+router.delete('/:id', private.checkJWT, service.deleteUser);
 
 router.post('/authenticate', service.authenticate);
 

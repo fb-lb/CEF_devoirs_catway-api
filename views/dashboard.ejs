@@ -1,25 +1,70 @@
 <% layout('layout') %>
 
-<h1>Gestion des utilisateurs</h1>
+<h1>Tableau de bord</h1>
 <section>
-    <h2>Ajouter un nouvel utilisateur</h2>
-    <form action="/users" method="post" id="addUserForm">
-        <div>
-            <label for="lastName">Nom</label>
-            <input type="text" name="lastName" id="lastName">
-        </div>
-        <div>
-            <label for="firstName">Prénom</label>
-            <input type="text" name="firstName" id="firstName">
-        </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email">
-        </div>
-        <div>
-            <label for="password">Mot de passe</label>
-            <input type="text" name="password" id="password">
-        </div>
-        <button type="submit">Enregistrer</button>
-    </form>
+    <h2>Gestion des utilisateurs</h2>
+    <section>
+        <h3>Ajouter un nouvel utilisateur</h3>
+        <form action="/users" method="post" id="addUserForm">
+            <div>
+                <label for="lastName">Nom</label>
+                <input type="text" name="lastName" id="lastName">
+            </div>
+            <div>
+                <label for="firstName">Prénom</label>
+                <input type="text" name="firstName" id="firstName">
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email">
+            </div>
+            <div>
+                <label for="password">Mot de passe</label>
+                <input type="text" name="password" id="password">
+            </div>
+            <button type="submit">Enregistrer</button>
+        </form>
+    </section>
+    <section>
+        <h3>Modifier un utilisateur</h3>
+        <form action="/users" method="post" id="updateUserForm">
+            <div>
+                <label for="updateIdUser">Identifiant</label>
+                <input type="text" name="updateIdUser" id="updateIdUser">
+                <small>(L'identifiant est obligatoire et ne peut être modifié)</small>
+            </div>
+            <div>
+                <label for="updateEmailUser">E-mail</label>
+                <input type="text" name="updateEmailUser" id="updateEmailUser">
+            </div>
+            <div>
+                <label for="updateLastNameUser">Nom</label>
+                <input type="text" name="updateLastNameUser" id="updateLastNameUser">
+            </div>
+            <div>
+                <label for="updateFirstNameUser">Prénom</label>
+                <input type="text" name="updateFirstNameUser" id="updateFirstNameUser">
+            </div>
+            <div>
+                <label for="updateCurrentPasswordUser">Mot de passe actuel</label>
+                <input type="password" name="updateCurrentPasswordUser" id="updateCurrentPasswordUser">
+            </div>
+            <div>
+                <label for="updateNewPasswordUser">Nouveau mot de passe</label>
+                <input type="password" name="updateNewPasswordUser" id="updateNewPasswordUser">
+                <small>(Veuillez renseigner le mot de passe actuel pour que le nouveau mot de passe soit pris en compte)</small>
+            </div>
+            <button type="submit">Enregistrer les modifications</button>
+        </form>
+    </section>
+    <section>
+        <h3>Supprimer un utilisateur</h3>
+        <form action="/users" methode="post" id="deleteUserForm">
+            <div>
+                <label for="deleteIdUser">Identifiant</label>
+                <input type="text" name="deleteIdUser" id="deleteIdUser">
+            </div>
+            <button type="submit">Supprimer cet utilisateur</button>
+        </form>
+    </section>
 </section>

@@ -83,7 +83,35 @@ async function authenticate(req, res, next) {
     }
 };
 
-/** @param {import('express').Response} res */
+async function deleteUser(req, res, next) {
+    let id = req.params.id;
+    try {
+        let user = await User.findById(id);
+        if(user) {
+            await User.deleteOne({_id: id});
+            return res.status(204).send();
+        } else {
+            return res.status(404).json({'message': 'Cet identifiant ne correspond à aucun utilisateur'});
+        }
+    } catch (error) {
+        return res.status(501).json({'message': "Nous ne parvenons pas à nous connecter à notre base de données. Veuillez réessayer ultérieurement."});
+    }
+};
+
+async function get(req, res, next) {
+    const id = req.params.id;
+    try {
+        let user = await User.findById(id, '-password -__v -createdAt -updatedAt');
+        if(user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({'message': 'Cet identifiant ne correspond à aucun utilisateur'});
+        }
+    } catch (error) {
+        res.status(501).json({'message': 'Nous ne parvenons pas à nous connecter à notre base de données. Veuillez réessayer ultérieurement.'});
+    }
+};
+
 function logout(req, res, next) {
     res.clearCookie('token', {
         sameSite: 'Lax',
@@ -101,8 +129,45 @@ function logout(req, res, next) {
         secure: process.env.SECURE_COOKIE,
     });
     let message = { 'message': 'Vous êtes bien déconnecté.' };
-
     return res.status(200).json(message);
 };
 
-module.exports = { add, authenticate, logout};
+async function update(req, res, next) {
+    let id = req.params.id;
+    let currentPassword = req.body.currentPassword;
+    let newPassword = req.body.newPassword;
+
+    try {
+        if (!req.body.email || !req.body.lastName || !req.body.firstName) {
+            return res.status(400).json({'message': 'Les champs Email, Nom et Prénom sont requis.'});
+        }
+        let user = await User.findById(id);
+        if(user) {
+            if(!currentPassword && !newPassword) {
+                user.email = req.body.email;
+                user.lastName = req.body.lastName;
+                user.firstName = req.body.firstName;
+                await user.save();
+                return res.status(204).send();
+            } else if (await bcrypt.compare(currentPassword, user.password)) {
+                if (!newPassword) {
+                    return res.status(400).json({'message': 'Le nouveau mot de passe doit contenir au moins un caractère.'});
+                }
+                user.email = req.body.email;
+                user.lastName = req.body.lastName;
+                user.firstName = req.body.firstName;
+                user.password = newPassword;
+                await user.save();
+                return res.status(204).send();
+            } else {
+                return res.status(403).json({'message': 'Mot de passe actuel incorrect.'});
+            }
+        } else {
+            return res.status(404).json({'message': 'Cet identifiant ne correspond à aucun utilisateur'});
+        }
+    } catch (error) {
+        return res.status(501).json({'message': "Nous ne parvenons pas à nous connecter à notre base de données. Veuillez réessayer ultérieurement."});
+    }
+};
+
+module.exports = { add, authenticate, deleteUser, get, logout, update};
