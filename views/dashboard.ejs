@@ -150,5 +150,51 @@
                 </form>
             </section>
         </section>
+        <section>
+            <h2>Gestion des réservations</h2>
+            <section>
+                <h3>Ajouter une réservation</h3>
+                <form action="/reservations" method="post" id="addReservationForm">
+                    <div>
+                        <label for="addCatwayNumberReservation">Numéro du catway</label>
+                        <input type="number" name="addCatwayNumberReservation" id="addCatwayNumberReservation" value="1">
+                    </div>
+                    <div>
+                        <label for="addClientName">Nom du client</label>
+                        <input type="text" name="addClientName" id="addClientName" value="Jack Sparrow">
+                    </div>
+                    <div>
+                        <label for="addBoatName">Nom du bateau</label>
+                        <input type="text" name="addBoatName" id="addBoatName" value="Black Pearl">
+                    </div>
+                    <div>
+                        <label for="addCheckInDate">Jour d'arrivée</label>
+                        <input type="date" name="addCheckInDate" id="addCheckInDate" value="2025-06-06">
+                    </div>
+                    <div>
+                        <label for="addCheckInTime">Heure d'arrivée</label>
+                        <input type="time" name="addCheckInTime" id="addCheckInTime" value="15:30">
+                    </div>
+                    <div>
+                        <label for="addCheckOutDate">Jour de départ</label>
+                        <input type="date" name="addCheckOutDate" id="addCheckOutDate" value="2025-06-20">
+                    </div>
+                    <div>
+                        <label for="addCheckOutTime">Heure de départ</label>
+                        <input type="time" name="addCheckOutTime" id="addCheckOutTime" value="12:30">
+                    </div>
+                    <button type="submit">Enregistrer</button>
+                </form>
+            </section>
+            <section>
+                <h3>Afficher une réservation</h3>
+            </section>
+            <section>
+                <h3>Modifier une réservation</h3>
+            </section>
+            <section>
+                <h3>Supprimer une réservation</h3>
+            </section>
+        </section>
     </div>
 </main>

@@ -3,6 +3,7 @@ var router = express.Router();
 
 const userRoute = require('../routes/users');
 const catwayRoute = require('../routes/catways');
+const reservationRoute = require('../routes/reservations');
 const private = require('../middlewares/private');
 const serviceCatways = require('../services/catways');
 
@@ -11,7 +12,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/tableau-de-bord',private.checkJWT , (req, res, next) => {
-    let scripts = ['/javascripts/dashboard/dashboard-users.js', '/javascripts/dashboard/dashboard-catways.js'];
+    let scripts = ['/javascripts/dashboard/dashboard-users.js', '/javascripts/dashboard/dashboard-catways.js', '/javascripts/dashboard/dashboard-reservations.js'];
     res.render('dashboard', { scripts: scripts });
 });
 
@@ -27,5 +28,6 @@ router.get('/liste-des-catways', private.checkJWT, async (req, res, next) => {
 
 router.use('/users', userRoute);
 router.use('/catways', catwayRoute);
+router.use('/reservations', reservationRoute);
 
 module.exports = router;

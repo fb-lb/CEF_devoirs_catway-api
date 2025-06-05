@@ -24,3 +24,7 @@ a {
   flex-direction: row;
   gap: 5%;
 }
+
+.flex-row > section {
+  width: 30%;
+}
