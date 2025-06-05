@@ -1,0 +1,25 @@
+<% layout('layout') %>
+
+<main>
+    <h1>Liste des catways</h1>
+    <table id="catwaysList">
+        <thead>
+            <tr>
+                <th>Identifiant</th>
+                <th>Numéro du catway</th>
+                <th>Type du catway</th>
+                <th>&Eacutetat du catway</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% catways.forEach((catway) => { %>
+            <tr>
+                <td><%= catway._id %></td>
+                <td><%= catway.catwayNumber %></td>
+                <td><%= catway.type %></td>
+                <td><%= catway.catwayState %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</main>

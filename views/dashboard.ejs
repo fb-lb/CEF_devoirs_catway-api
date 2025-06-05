@@ -1,70 +1,154 @@
 <% layout('layout') %>
-
-<h1>Tableau de bord</h1>
-<section>
-    <h2>Gestion des utilisateurs</h2>
-    <section>
-        <h3>Ajouter un nouvel utilisateur</h3>
-        <form action="/users" method="post" id="addUserForm">
-            <div>
-                <label for="lastName">Nom</label>
-                <input type="text" name="lastName" id="lastName">
-            </div>
-            <div>
-                <label for="firstName">Prénom</label>
-                <input type="text" name="firstName" id="firstName">
-            </div>
-            <div>
-                <label for="email">Email</label>
-                <input type="text" name="email" id="email">
-            </div>
-            <div>
-                <label for="password">Mot de passe</label>
-                <input type="text" name="password" id="password">
-            </div>
-            <button type="submit">Enregistrer</button>
-        </form>
-    </section>
-    <section>
-        <h3>Modifier un utilisateur</h3>
-        <form action="/users" method="post" id="updateUserForm">
-            <div>
-                <label for="updateIdUser">Identifiant</label>
-                <input type="text" name="updateIdUser" id="updateIdUser">
-                <small>(L'identifiant est obligatoire et ne peut être modifié)</small>
-            </div>
-            <div>
-                <label for="updateEmailUser">E-mail</label>
-                <input type="text" name="updateEmailUser" id="updateEmailUser">
-            </div>
-            <div>
-                <label for="updateLastNameUser">Nom</label>
-                <input type="text" name="updateLastNameUser" id="updateLastNameUser">
-            </div>
-            <div>
-                <label for="updateFirstNameUser">Prénom</label>
-                <input type="text" name="updateFirstNameUser" id="updateFirstNameUser">
-            </div>
-            <div>
-                <label for="updateCurrentPasswordUser">Mot de passe actuel</label>
-                <input type="password" name="updateCurrentPasswordUser" id="updateCurrentPasswordUser">
-            </div>
-            <div>
-                <label for="updateNewPasswordUser">Nouveau mot de passe</label>
-                <input type="password" name="updateNewPasswordUser" id="updateNewPasswordUser">
-                <small>(Veuillez renseigner le mot de passe actuel pour que le nouveau mot de passe soit pris en compte)</small>
-            </div>
-            <button type="submit">Enregistrer les modifications</button>
-        </form>
-    </section>
-    <section>
-        <h3>Supprimer un utilisateur</h3>
-        <form action="/users" methode="post" id="deleteUserForm">
-            <div>
-                <label for="deleteIdUser">Identifiant</label>
-                <input type="text" name="deleteIdUser" id="deleteIdUser">
-            </div>
-            <button type="submit">Supprimer cet utilisateur</button>
-        </form>
-    </section>
-</section>
+<main>
+    <h1>Tableau de bord</h1>
+    <div class="flex-row">
+        <section>
+            <h2>Gestion des utilisateurs</h2>
+            <section>
+                <h3>Ajouter un nouvel utilisateur</h3>
+                <form action="/users" method="post" id="addUserForm">
+                    <div>
+                        <label for="lastName">Nom</label>
+                        <input type="text" name="lastName" id="lastName">
+                    </div>
+                    <div>
+                        <label for="firstName">Prénom</label>
+                        <input type="text" name="firstName" id="firstName">
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email">
+                    </div>
+                    <div>
+                        <label for="password">Mot de passe</label>
+                        <input type="text" name="password" id="password">
+                    </div>
+                    <button type="submit">Enregistrer</button>
+                </form>
+            </section>
+            <section>
+                <h3>Modifier un utilisateur</h3>
+                <form action="/users" method="post" id="updateUserForm">
+                    <div>
+                        <label for="updateIdUser">Identifiant</label>
+                        <input type="text" name="updateIdUser" id="updateIdUser">
+                        <small>(L'identifiant est obligatoire et ne peut être modifié)</small>
+                    </div>
+                    <div>
+                        <label for="updateEmailUser">E-mail</label>
+                        <input type="text" name="updateEmailUser" id="updateEmailUser">
+                    </div>
+                    <div>
+                        <label for="updateLastNameUser">Nom</label>
+                        <input type="text" name="updateLastNameUser" id="updateLastNameUser">
+                    </div>
+                    <div>
+                        <label for="updateFirstNameUser">Prénom</label>
+                        <input type="text" name="updateFirstNameUser" id="updateFirstNameUser">
+                    </div>
+                    <div>
+                        <label for="updateCurrentPasswordUser">Mot de passe actuel</label>
+                        <input type="password" name="updateCurrentPasswordUser" id="updateCurrentPasswordUser">
+                    </div>
+                    <div>
+                        <label for="updateNewPasswordUser">Nouveau mot de passe</label>
+                        <input type="password" name="updateNewPasswordUser" id="updateNewPasswordUser">
+                        <small>(Veuillez renseigner le mot de passe actuel pour que le nouveau mot de passe soit pris en compte)</small>
+                    </div>
+                    <button type="submit">Enregistrer les modifications</button>
+                </form>
+            </section>
+            <section>
+                <h3>Supprimer un utilisateur</h3>
+                <form action="/users" methode="post" id="deleteUserForm">
+                    <div>
+                        <label for="deleteIdUser">Identifiant</label>
+                        <input type="text" name="deleteIdUser" id="deleteIdUser">
+                    </div>
+                    <button type="submit">Supprimer cet utilisateur</button>
+                </form>
+            </section>
+        </section>
+        <section>
+            <h2>Gestion des catways</h2>
+            <a href="/liste-des-catways">Accéder à la liste complète des catways</a>
+            <section>
+                <h3>Ajouter un nouveau catway</h3>
+                <form action="/catways" method="post" id="addCatwayForm">
+                    <div>
+                        <label for="addCatwayNumber">Numéro du catway</label>
+                        <input type="number" name="addCatwayNumber" id="addCatwayNumber">
+                    </div>
+                    <div>
+                        <label for="addCatwayState">&Eacutetat du catway</label>
+                        <input type="text" name="addCatwayState" id="addCatwayState">
+                    </div>
+                    <div>
+                        <label for="addCatwayType">Type du catway</label>
+                        <select name="addCatwayType" id="addCatwayType">
+                            <option value="short">court</option>
+                            <option value="long">long</option>
+                        </select>
+                    </div>
+                    <button type="submit">Enregistrer</button>
+                </form>
+            </section>
+                <h3>Afficher les information relative à un catway</h3>
+                <form action="/catways" method="get" id="getCatwayForm">
+                    <label for="getCatwayId">Identifiant du catway (24 caractères)</label>
+                    <input type="text" name="getCatwayId" id="getCatwayId">
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Numéro du catway</th>
+                            <th>Etat du catway</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td id="getCatwayNumber"></td>
+                            <td id="getCatwayState"></td>
+                            <td id="getCatwayType"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            <section>
+                <h3>Modifier un catway</h3>
+                <form action="/catways" method="post" id="updateCatwayForm">
+                    <div>
+                        <label for="updateCatwayId">Identifiant</label>
+                        <input type="text" name="updateCatwayId" id="updateCatwayId">
+                    </div>
+                    <div>
+                        <label for="updateCatwayNumber">Numéro</label>
+                        <input type="number" name="updateCatwayNumber" id="updateCatwayNumber">
+                    </div>
+                    <div>
+                        <label for="updateCatwayState">&Eacutetat du catway</label>
+                        <input type="text" name="updateCatwayState" id="updateCatwayState">
+                    </div>
+                    <div>
+                        <label for="updateCatwayType">Type</label>
+                        <select name="updateCatwayType" id="updateCatwayType">
+                            <option value="short">court</option>
+                            <option value="long">long</option>
+                        </select>
+                    </div>
+                    <button type="submit">Modifier</button>
+                </form>
+            </section>
+            <section>
+                <h3>Supprimer un catway</h3>
+                <form action="/catways" method="post" id="deleteCatwayForm">
+                    <div>
+                        <label for="deleteCatwayId">Identifiant du catway</label>
+                        <input type="text" name="deleteCatwayId" id="deleteCatwayId">
+                    </div>
+                    <button type="submit">Supprimer</button>
+                </form>
+            </section>
+        </section>
+    </div>
+</main>

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.SECRET_KEY;
 
+/** @param {import('express').Response} res */
 exports.checkJWT = async (req, res, next) => {
     let token = req.cookies.token;
 
@@ -43,6 +44,9 @@ exports.checkJWT = async (req, res, next) => {
             }
         });
     } else {
+        if (req.path === '/tableau-de-bord' || req.path === '/liste-des-catways' || req.path === '/liste-des-reservations') {
+            return res.redirect('/');
+        }
         message = { 'message': 'Token manquant. Veuillez vous reconnecter'};
         return res.status(401).json(message);
     }
