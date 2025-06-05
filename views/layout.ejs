@@ -14,7 +14,7 @@
   <% }) %>
   <script src="/javascripts/header.js" defer></script>
   <% scripts.forEach(function(src) { %>
-    <script src="<%= src %>" defer></script>
+    <script type="module" src="<%= src %>" defer></script>
   <% }) %>
 </head>
 <body>

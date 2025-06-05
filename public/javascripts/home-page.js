@@ -99,4 +99,4 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessageElement('deconnectionForm', 'deconnectionMessageId', 'error', message);
         }
     });
-})
+});

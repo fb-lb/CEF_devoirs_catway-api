@@ -1,18 +1,4 @@
-function addMessageElement(formId, messageId, messageClass, messageText) {
-    let messageElement = document.getElementById(messageId);
-    if (messageElement) {
-        messageElement.setAttribute('class', messageClass);
-        messageElement.innerHTML = messageText;
-    } else {
-        messageElement = document.createElement('p');
-        messageElement.setAttribute('id', messageId);
-        messageElement.setAttribute('class', messageClass);
-        let messageTextNode = document.createTextNode(messageText);
-        messageElement.appendChild(messageTextNode);
-        let formElement = document.getElementById(formId);
-        formElement.appendChild(messageElement);
-    }
-};
+import { addMessageElement } from '../javascripts/module.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
     
@@ -49,7 +35,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         }
     });
 
-    // Add dynamically user's information on update user form if user's is good
+    // Add dynamically user's informations on update user form if user's id is good
     let updateIdElement = document.getElementById('updateIdUser');
 
     updateIdElement.addEventListener('input', async () => {
