@@ -46,6 +46,15 @@ async function get(id) {
     }
 };
 
+async function getAll() {
+    try {
+        const catways = await Catway.find();
+        return catways;
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function update(id, reqBody) {
     try {
         if (!reqBody.catwayNumber || !reqBody.type || !reqBody.catwayState) {
@@ -67,4 +76,4 @@ async function update(id, reqBody) {
     }
 };
 
-module.exports = { add, deleteCatway, get, update };
+module.exports = { add, deleteCatway, get, getAll, update };

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <% var scripts = scripts || []; %>
-  <% var styles = styles || []; %>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="/favicon/favicon.png" type="image/png">
-  <link rel="stylesheet" href="/stylesheets/style.css">
-  <meta name="description" content="Réservez votre catway pour amarrer votre bateau dans notre port de plaisance Russell. Nous disposons de catway court et long pour tout type de bateau.">
-  <title>Port de plaisance Russell, réservation de catway</title>
-  <% styles.forEach(function(href) { %>
+    <% var scripts = scripts || []; %>
+    <% var styles = styles || []; %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <meta name="description" content="Réservez votre catway pour amarrer votre bateau dans notre port de plaisance Russell. Nous disposons de catway court et long pour tout type de bateau.">
+    <title>Port de plaisance Russell, réservation de catway</title>
+    <% styles.forEach(function(href) { %>
     <link rel="stylesheet" href="<%= href %>">
-  <% }) %>
-  <script src="/javascripts/header.js" defer></script>
-  <% scripts.forEach(function(src) { %>
+    <% }) %>
+    <script src="/javascripts/header.js" defer></script>
+    <% scripts.forEach(function(src) { %>
     <script type="module" src="<%= src %>" defer></script>
-  <% }) %>
+    <% }) %>
 </head>
 <body>
   <%- include('header')%>
-  <main>
-    <%- body%>
-  </main>
+  
+  <%- body%>
+
 </body>
 </html>

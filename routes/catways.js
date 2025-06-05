@@ -18,6 +18,15 @@ router.post('/', private.checkJWT, async (req, res) => {
     }
 });
 
+router.get('/all', private.checkJWT, async (req, res) => {
+    try {
+        const catways = await service.getAll();
+        return res.status(200).json(catways);
+    } catch (error) {
+        return res.status(501).json({'message': 'Nous ne parvenons pas à nous connecter à notre base de données. Veuillez réessayer ultérieurement.'});
+    }
+});
+
 router.get('/:id', private.checkJWT, async (req, res) => {
     try {
         const catway = await service.get(req.params.id);

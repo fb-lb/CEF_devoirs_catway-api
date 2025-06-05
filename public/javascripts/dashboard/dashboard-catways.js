@@ -1,4 +1,4 @@
-import { addMessageElement } from '../javascripts/module.js';
+import { addMessageElement } from '../../javascripts/module.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     
