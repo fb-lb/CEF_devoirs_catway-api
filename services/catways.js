@@ -71,7 +71,6 @@ async function update(id, reqBody) {
             throw new Error('CATWAY_NOT_FOUND');
         }
     } catch (error) {
-        console.log(error);
         throw error;
     }
 };

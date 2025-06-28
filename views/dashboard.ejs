@@ -169,7 +169,7 @@
                     </div>
                     <div>
                         <label for="addCheckInDate">Jour d'arrivée</label>
-                        <input type="date" name="addCheckInDate" id="addCheckInDate" value="2025-06-06">
+                        <input type="date" name="addCheckInDate" id="addCheckInDate" value="2025-07-06">
                     </div>
                     <div>
                         <label for="addCheckInTime">Heure d'arrivée</label>
@@ -177,7 +177,7 @@
                     </div>
                     <div>
                         <label for="addCheckOutDate">Jour de départ</label>
-                        <input type="date" name="addCheckOutDate" id="addCheckOutDate" value="2025-06-20">
+                        <input type="date" name="addCheckOutDate" id="addCheckOutDate" value="2025-07-20">
                     </div>
                     <div>
                         <label for="addCheckOutTime">Heure de départ</label>
@@ -188,12 +188,98 @@
             </section>
             <section>
                 <h3>Afficher une réservation</h3>
+                <form action="/reservations" method="get" id="getReservationForm">
+                    <label for="getReservationId">Identifiant de la réservation (24 caractères)</label>
+                    <input type="text" name="getReservationId" id="getReservationId">
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom du client</th>
+                            <th>Nom du bateau</th>
+                            <th>Numéro du catway</th>
+                            <th>Date d'arrivée</th>
+                            <th>Date de départ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="getReservationClientName"></td>
+                            <td id="getReservationBoatName"></td>
+                            <td id="getReservationCatwayNumber"></td>
+                            <td id="getReservationCheckIn"></td>
+                            <td id="getReservationCheckOut"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
             <section>
                 <h3>Modifier une réservation</h3>
+                <form action="/reservations" method="post" id="updateReservationForm">
+                    <div>
+                        <label for="updateReservationId">Identifiant</label>
+                        <input type="text" name="updateReservationId" id="updateReservationId">
+                    </div>
+                    <div>
+                        <label for="updateReservationClientName">Nom du client</label>
+                        <input type="text" name="updateReservationClientName" id="updateReservationClientName">
+                    </div>
+                    <div>
+                        <label for="updateReservationBoatName">Nom du bateau</label>
+                        <input type="text" name="updateReservationBoatName" id="updateReservationBoatName">
+                    </div>
+                    <div>
+                        <label for="updateReservationCatway">Numéro du catway</label>
+                        <input type="text" name="updateReservationCatway" id="updateReservationCatway">
+                    </div>
+                    <div>
+                        <label for="updateReservationCheckInDate">Jour d'arrivée</label>
+                        <input type="date" name="updateReservationCheckInDate" id="updateReservationCheckInDate">
+                    </div>
+                    <div>
+                        <label for="updateReservationCheckInTime">Heure d'arrivée</label>
+                        <input type="time" name="updateReservationCheckInTime" id="updateReservationCheckInTime">
+                    </div>
+                    <div>
+                        <label for="updateReservationCheckOutDate">Jour de départ</label>
+                        <input type="date" name="updateReservationCheckOutDate" id="updateReservationCheckOutDate">
+                    </div>
+                    <div>
+                        <label for="updateReservationCheckOutTime">Heure de départ</label>
+                        <input type="time" name="updateReservationCheckOutTime" id="updateReservationCheckOutTime">
+                    </div>
+                    <button type="submit">Modifier</button>
+                </form>
             </section>
             <section>
                 <h3>Supprimer une réservation</h3>
+                <form action="/reservations" method="post" id="deleteReservationForm">
+                    <div>
+                        <label for="deleteReservationId">Identifiant de la réservation</label>
+                        <input type="text" name="deleteReservationId" id="deleteReservationId">
+                    </div>
+                    <button type="submit">Supprimer</button>
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom du client</th>
+                            <th>Nom du bateau</th>
+                            <th>Numéro du catway</th>
+                            <th>Date d'arrivée</th>
+                            <th>Date de départ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="deleteReservationClientName"></td>
+                            <td id="deleteReservationBoatName"></td>
+                            <td id="deleteReservationCatwayNumber"></td>
+                            <td id="deleteReservationCheckIn"></td>
+                            <td id="deleteReservationCheckOut"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
         </section>
     </div>
