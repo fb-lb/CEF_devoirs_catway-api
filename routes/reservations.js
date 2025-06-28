@@ -27,6 +27,15 @@ router.post('/', private.checkJWT, async (req, res, next) => {
     }
 });
 
+router.get('/all', private.checkJWT, async (req, res, next) => {
+    try {
+        const reservations = await service.getAll();
+        return res.status(200).json(reservations);
+    } catch (error) {
+        return res.status(501).json({ 'message': "La réservation n'a pas pu être ajoutée. Assurez-vous d'avoir rempli tous les champs." });
+    }
+});
+
 router.get('/:id', private.checkJWT, async (req, res, next) => {
     try {
         const reservation = await service.get(req.params.id);

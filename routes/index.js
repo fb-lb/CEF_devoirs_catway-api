@@ -6,6 +6,7 @@ const catwayRoute = require('../routes/catways');
 const reservationRoute = require('../routes/reservations');
 const private = require('../middlewares/private');
 const serviceCatways = require('../services/catways');
+const serviceReservations = require('../services/reservations');
 
 router.get('/', function(req, res, next) {
     res.render('home-page', { scripts: ['/javascripts/home-page.js'] });
@@ -23,6 +24,22 @@ router.get('/liste-des-catways', private.checkJWT, async (req, res, next) => {
     } catch (error) {
         const catways = {'message' : 'Nous ne parvenons pas à récupérer la liste des catways.'};
         res.render('catways-list', { catways });
+    } 
+});
+
+router.get('/liste-des-reservations', private.checkJWT, async (req, res, next) => {
+    try {
+        const reservations = await serviceReservations.getAll();
+        reservations.forEach(reservation => {
+            const checkIn = new Date(reservation.checkIn);
+            reservation.checkIn = checkIn.toLocaleString().slice(0, -3);
+            const checkOut = new Date(reservation.checkOut);
+            reservation.checkOut = checkOut.toLocaleString().slice(0, -3);
+        });
+        res.render('reservations-list', { reservations });
+    } catch (error) {
+        const reservations = {'message' : 'Nous ne parvenons pas à récupérer la liste des réservations.'};
+        res.render('reservations-list', { reservations });
     } 
 });
 

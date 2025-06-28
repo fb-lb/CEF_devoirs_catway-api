@@ -63,6 +63,16 @@ async function get(id) {
     }
 };
 
+async function getAll() {
+    try {
+        const reservations = await Reservation.find();
+        return reservations;
+    } catch (error) {
+        throw error;
+        
+    }
+};
+
 async function update(id, reqBody) {
     try {
         if (!reqBody.clientName || !reqBody.boatName || !reqBody.catwayNumber || !reqBody.checkIn || !reqBody.checkOut ) {
@@ -106,4 +116,4 @@ async function update(id, reqBody) {
     }
 };
 
-module.exports = { add, deleteReservation, get, update};
+module.exports = { add, deleteReservation, get, getAll, update};

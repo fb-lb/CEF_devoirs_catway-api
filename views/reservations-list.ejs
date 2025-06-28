@@ -1,0 +1,29 @@
+<% layout('layout') %>
+
+<main>
+    <h1>Liste des catways</h1>
+    <table id="reservationsList">
+        <thead>
+            <tr>
+                <th>Identifiant</th>
+                <th>Nom du client</th>
+                <th>Nom du bateau</th>
+                <th>Numéro du catway</th>
+                <th>Date d'arrivée</th>
+                <th>Date de départ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% reservations.forEach((reservation) => { %>
+            <tr>
+                <td><%= reservation._id %></td>
+                <td><%= reservation.clientName %></td>
+                <td><%= reservation.boatName %></td>
+                <td><%= reservation.catwayNumber %></td>
+                <td><%= reservation.checkIn %></td>
+                <td><%= reservation.checkOut %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</main>
