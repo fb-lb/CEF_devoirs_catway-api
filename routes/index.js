@@ -45,6 +45,6 @@ router.get('/liste-des-reservations', private.checkJWT, async (req, res, next) =
 
 router.use('/users', userRoute);
 router.use('/catways', catwayRoute);
-router.use('/reservations', reservationRoute);
+router.use('/catways', reservationRoute);
 
 module.exports = router;

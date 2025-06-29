@@ -48,7 +48,7 @@ async function get(id) {
 
 async function getAll() {
     try {
-        const catways = await Catway.find();
+        const catways = await Catway.find().select('-__v -createdAt -updatedAt');
         return catways;
     } catch (error) {
         throw error;
