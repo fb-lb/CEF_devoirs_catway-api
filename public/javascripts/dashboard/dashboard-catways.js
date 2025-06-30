@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     getCatwayNumber.innerHTML = data.catwayNumber;
                     getCatwayState.innerHTML = data.catwayState;
                     getCatwayType.innerHTML = data.type;
+                    const messageGetCatway = document.getElementById('messageGetCatway');
+                    if (messageGetCatway) messageGetCatway.remove();
                 } else {
                     addMessageElement('getCatwayForm', 'messageGetCatway', 'error', data.message);
                 }
@@ -101,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 addMessageElement('updateCatwayForm', 'messageUpdateCatway', 'error', "Nous ne parvenons pas à nous connecter au serveur.");
             }
         } else {
-            addMessageElement('updateCatwayForm', 'messageUpdateCatway', 'error', "L'identifiant doit faire 24 caractères.");
+            addMessageElement('updateCatwayForm', 'messageUpdateCatway', 'error', "L'identifiant doit faire 24 caractères (chiffres et/ou lettres).");
         }
     });
 
@@ -126,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateCatwayNumber.value = data.catwayNumber;
                     updateCatwayState.value = data.catwayState;
                     updateCatwayType.value = data.type;
+                    const messageUpdateCatway = document.getElementById('messageUpdateCatway');
+                    if (messageUpdateCatway) messageUpdateCatway.remove();
                 } else {
                     addMessageElement('updateCatwayForm', 'messageUpdateCatway', 'error', data.message);
                 }
@@ -133,6 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 addMessageElement('updateCatwayForm', 'messageUpdateCatway', 'error', 'Nous ne parvenons pas à nous connecter au serveur.');
             }
         } else {
+            updateCatwayNumber.value = null;
+            updateCatwayState.value = '';
+            updateCatwayType.value = 'short';
             const messageUpdateCatway = document.getElementById('messageUpdateCatway');
             if (messageUpdateCatway) {
                 messageUpdateCatway.innerHTML = '';

@@ -3,15 +3,17 @@ var router = express.Router();
 
 const userRoute = require('../routes/users');
 const catwayRoute = require('../routes/catways');
+const reservationRoute = require('../routes/reservations');
 const private = require('../middlewares/private');
 const serviceCatways = require('../services/catways');
+const serviceReservations = require('../services/reservations');
 
 router.get('/', function(req, res, next) {
     res.render('home-page', { scripts: ['/javascripts/home-page.js'] });
 });
 
 router.get('/tableau-de-bord',private.checkJWT , (req, res, next) => {
-    let scripts = ['/javascripts/dashboard/dashboard-users.js', '/javascripts/dashboard/dashboard-catways.js'];
+    let scripts = ['/javascripts/dashboard/dashboard-users.js', '/javascripts/dashboard/dashboard-catways.js', '/javascripts/dashboard/dashboard-reservations.js'];
     res.render('dashboard', { scripts: scripts });
 });
 
@@ -25,7 +27,24 @@ router.get('/liste-des-catways', private.checkJWT, async (req, res, next) => {
     } 
 });
 
+router.get('/liste-des-reservations', private.checkJWT, async (req, res, next) => {
+    try {
+        const reservations = await serviceReservations.getAll();
+        reservations.forEach(reservation => {
+            const checkIn = new Date(reservation.checkIn);
+            reservation.checkIn = checkIn.toLocaleString().slice(0, -3);
+            const checkOut = new Date(reservation.checkOut);
+            reservation.checkOut = checkOut.toLocaleString().slice(0, -3);
+        });
+        res.render('reservations-list', { reservations });
+    } catch (error) {
+        const reservations = {'message' : 'Nous ne parvenons pas à récupérer la liste des réservations.'};
+        res.render('reservations-list', { reservations });
+    } 
+});
+
 router.use('/users', userRoute);
 router.use('/catways', catwayRoute);
+router.use('/catways', reservationRoute);
 
 module.exports = router;

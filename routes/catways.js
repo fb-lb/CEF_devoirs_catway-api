@@ -64,6 +64,8 @@ router.delete('/:id', private.checkJWT, async (req, res) => {
     } catch (error) {
         if (error.message === 'CATWAY_NOT_FOUND') {
             return res.status(404).json({'message': 'Cet identifiant ne correspond à aucun catway'});
+        } else if (error.message.includes('Cast to ObjectId failed')) {
+            return res.status(403).json({ 'message': "L'identifiant doit faire 24 caractères et doit contenir des chiffres et des lettres." });
         } else {
             return res.status(501).json({'message': 'Nous ne parvenons pas à nous connecter à notre base de données. Veuillez réessayer ultérieurement.'});
         }
