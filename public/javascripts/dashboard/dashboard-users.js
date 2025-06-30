@@ -55,6 +55,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     updateUserForm.updateEmailUser.value = data.email;
                     updateUserForm.updateLastNameUser.value = data.lastName;
                     updateUserForm.updateFirstNameUser.value = data.firstName;
+                    updateUserForm.updateCurrentPasswordUser.value = '';
+                    updateUserForm.updateNewPasswordUser.value = '';
+                    const messageUpdateUser = document.getElementById('messageUpdateUser');
+                    if (messageUpdateUser) messageUpdateUser.remove();
                 } else {
                     addMessageElement('updateUserForm', 'messageUpdateUser', 'error', data.message);
                 }
@@ -62,7 +66,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 addMessageElement('updateUserForm', 'messageUpdateUser', 'error', 'Nous ne parvenons pas à nous connecter au serveur. Veuillez vérifier votre connexion internet.');
             }
         } else {
-            let messageElement = document.getElementById('messageUpdateUser');
+            updateUserForm.updateEmailUser.value = '';
+            updateUserForm.updateLastNameUser.value = '';
+            updateUserForm.updateFirstNameUser.value = '';
+            updateUserForm.updateCurrentPasswordUser.value = '';
+            updateUserForm.updateNewPasswordUser.value = '';
+            const messageElement = document.getElementById('messageUpdateUser');
             if(messageElement) {
                 messageElement.remove();
             }
@@ -75,10 +84,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     updateUserForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         let id = updateUserForm.updateIdUser.value;
-        if(id) {
+        if(id.length == 24) {
             try {
                 let url = `${updateUserForm.action}/${id}`;
-                console.log(url);
                 let response = await fetch(url, {
                     method: 'PATCH',
                     headers: {'Content-Type': 'application/JSON'},
@@ -100,11 +108,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     addMessageElement('updateUserForm', 'messageUpdateUser', 'error', data.message);
                 }
             } catch (error) {
-                console.log(error);
                 addMessageElement('updateUserForm', 'messageUpdateUser', 'error', 'Nous ne parvenons pas à nous connecter au serveur. Veuillez vérifier votre connexion internet.');
             }
     } else {
-        addMessageElement('updateUserForm', 'messageUpdateUser', 'error', 'Le champs Identifiant est requis.');
+        addMessageElement('updateUserForm', 'messageUpdateUser', 'error', 'Le champs Identifiant est requis et doit comporter 24 caractères (chiffres et/ou lettres).');
     }
     });
 
@@ -130,7 +137,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     addMessageElement('deleteUserForm', 'messageDeleteUser', 'error', data.message);
                 }
             } catch (error) {
-                console.log(error);
                 addMessageElement('deleteUserForm', 'messageDeleteUser', 'error', 'Nous ne parvenons pas à nous connecter au serveur. Veuillez vérifier votre connexion internet.');
             }
         }
@@ -160,11 +166,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     addMessageElement('deleteUserForm', 'messageDeleteUser', 'error', data.message);
                 }
             } catch (error) {
-                console.log(error);
                 addMessageElement('deleteUserForm', 'messageDeleteUser', 'error', 'Nous ne parvenons pas à nous connecter au serveur. Veuillez vérifier votre connexion internet.');
             }
         } else {
-            addMessageElement('deleteUserForm', 'messageDeleteUser', 'error', 'Le champs Identifiant est requis et doit contenir 24 caractères.');
+            addMessageElement('deleteUserForm', 'messageDeleteUser', 'error', 'Le champs Identifiant est requis et doit contenir 24 caractères (chiffres et/ou lettres).');
         }
     })
 });

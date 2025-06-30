@@ -44,7 +44,7 @@ router.get('/:id/reservations/:idReservation', private.checkJWT, async (req, res
         if (error.message == 'RESERVATION_NOT_FOUND') {
             return res.status(404).json({'message': "L'identifiant de la réservation ne correspond à aucune réservation pour ce catway."});
         } else if (error.message == 'CATWAY_NOT_FOUND') {
-            return res.status(404).json({'message': "L'identifiat du catway ne correspond à aucun catway."});
+            return res.status(404).json({'message': "L'identifiant du catway ne correspond à aucun catway."});
         } else {
             return res.status(501).json({'message': 'Nous ne parvenons pas à nous connecter à notre base de données. Veuillez réessayer ultérieurement.'});
         }

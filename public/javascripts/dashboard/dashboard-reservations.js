@@ -206,59 +206,67 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const dateChekcIn = updateReservationForm.updateReservationCheckInDate.value;
         const timeCheckIn = updateReservationForm.updateReservationCheckInTime.value;
-        const checkInDateTime = new Date(`${dateChekcIn}T${timeCheckIn}`).toISOString();
         const dateChekcOut = updateReservationForm.updateReservationCheckOutDate.value;
         const timeCheckOut = updateReservationForm.updateReservationCheckOutTime.value;
-        const checkOutDateTime = new Date(`${dateChekcOut}T${timeCheckOut}`).toISOString();
-        let catwayId = '';
-        
-        try {
-            const response = await fetch('/catways/all', {
-                method: 'GET',
-                headers: {"Content-Type": 'application/JSON'},
-                credentials: "include"
-            });
+        if(dateChekcIn != '' && timeCheckIn != '' && dateChekcOut != '' && timeCheckOut != '') {
+            const checkInDateTime = new Date(`${dateChekcIn}T${timeCheckIn}`).toISOString();
+            const checkOutDateTime = new Date(`${dateChekcOut}T${timeCheckOut}`).toISOString();
+            let catwayId = '';
+            
+            if (updateReservationId.value.length == 24) {
+                try {
+                    const response = await fetch('/catways/all', {
+                        method: 'GET',
+                        headers: {"Content-Type": 'application/JSON'},
+                        credentials: "include"
+                    });
 
-            const data = await response.json();
-            if (response.status == 200) {
-                const catway = data.find(c => c.catwayNumber == updateReservationInitialCatway.value)
-                if (catway) {
-                    catwayId = catway._id;
-                } else {
-                    addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', 'La réservation est faite sur un catway inexistant, nous ne pouvons pas accéder à cette réservation.');
+                    const data = await response.json();
+                    if (response.status == 200) {
+                        const catway = data.find(c => c.catwayNumber == updateReservationInitialCatway.value)
+                        if (catway) {
+                            catwayId = catway._id;
+                        } else {
+                            addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', 'La réservation est faite sur un catway inexistant, nous ne pouvons pas accéder à cette réservation.');
+                        }
+                    } else {
+                        addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', data.message);
+                    }
+                } catch (error) {
+                    addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', 'Nous ne parvenons pas à nous connecter au serveur.');
+                }
+                
+                if (catwayId != '') {
+                    try {
+                        const response = await fetch(`/catways/${catwayId}/reservations/${updateReservationId.value}`, {
+                            method: 'PATCH',
+                            headers: {'Content-Type': 'application/JSON'},
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                catwayNumber: updateReservationForm.updateReservationCatway.value,
+                                clientName: updateReservationForm.updateReservationClientName.value,
+                                boatName: updateReservationForm.updateReservationBoatName.value,
+                                checkIn: checkInDateTime,
+                                checkOut: checkOutDateTime
+                            })
+                        });
+
+                        if (response.status == 204) {
+                            updateReservationForm.reset();
+                            addMessageElement('updateReservationForm', 'messageUpdateReservation', 'success', 'La réservation a bien été modifiée.');
+                        } else {
+                            const data = await response.json();
+                            addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', data.message);
+                        }
+                    } catch (error) {
+                        addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', 'Nous ne parvenons pas à nous connecter au serveur.');
+                    }
                 }
             } else {
-                addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', data.message);
+                addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', "L'identifiant de la réservation doit contenir 24 caractères (lettres et/ou chiffres).");
             }
-        } catch (error) {
-            addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', 'Nous ne parvenons pas à nous connecter au serveur.');
-        }
-        
-        if (catwayId != '') {
-            try {
-                const response = await fetch(`/catways/${catwayId}/reservations/${updateReservationId.value}`, {
-                    method: 'PATCH',
-                    headers: {'Content-Type': 'application/JSON'},
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        catwayNumber: updateReservationForm.updateReservationCatway.value,
-                        clientName: updateReservationForm.updateReservationClientName.value,
-                        boatName: updateReservationForm.updateReservationBoatName.value,
-                        checkIn: checkInDateTime,
-                        checkOut: checkOutDateTime
-                    })
-                });
-
-                if (response.status == 204) {
-                    updateReservationForm.reset();
-                    addMessageElement('updateReservationForm', 'messageUpdateReservation', 'success', 'La réservation a bien été modifiée.');
-                } else {
-                    const data = await response.json();
-                    addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', data.message);
-                }
-            } catch (error) {
-                addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', 'Nous ne parvenons pas à nous connecter au serveur.');
-            }
+        } else {
+            addMessageElement('updateReservationForm', 'messageUpdateReservation', 'error', "Merci de renseigner les dates et les heures de départ et d'arrivée");
         }
     });
 
