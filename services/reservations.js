@@ -45,7 +45,6 @@ async function deleteReservation(idCatway, idReservation) {
         await reservation.deleteOne({_id: idReservation});
         return true;
     } catch (error) {
-        console.log(error.message);
         throw error;
     }
 };
