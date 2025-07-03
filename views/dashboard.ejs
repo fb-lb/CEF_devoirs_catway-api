@@ -93,6 +93,7 @@
                     <button type="submit">Enregistrer</button>
                 </form>
             </section>
+            <section>
                 <h3>Afficher les information relative à un catway</h3>
                 <form action="/catways" method="get" id="getCatwayForm">
                     <label for="getCatwayId">Identifiant du catway (24 caractères)</label>
@@ -114,6 +115,7 @@
                         </tr>
                     </tbody>
                 </table>
+            </section>
             <section>
                 <h3>Modifier un catway</h3>
                 <form action="/catways" method="post" id="updateCatwayForm">
@@ -158,31 +160,31 @@
                 <form action="/catways/:id/reservations" method="post" id="addReservationForm">
                     <div>
                         <label for="addReservationCatwayNumber">Identifiant du catway</label>
-                        <input type="number" name="addReservationCatwayNumber" id="addReservationCatwayNumber" value="1">
+                        <input type="number" name="addReservationCatwayNumber" id="addReservationCatwayNumber">
                     </div>
                     <div>
                         <label for="addReservationClientName">Nom du client</label>
-                        <input type="text" name="addReservationClientName" id="addReservationClientName" value="Jack Sparrow">
+                        <input type="text" name="addReservationClientName" id="addReservationClientName">
                     </div>
                     <div>
                         <label for="addReservationBoatName">Nom du bateau</label>
-                        <input type="text" name="addReservationBoatName" id="addReservationBoatName" value="Black Pearl">
+                        <input type="text" name="addReservationBoatName" id="addReservationBoatName">
                     </div>
                     <div>
                         <label for="addReservationCheckInDate">Jour d'arrivée</label>
-                        <input type="date" name="addReservationCheckInDate" id="addReservationCheckInDate" value="2025-07-06">
+                        <input type="date" name="addReservationCheckInDate" id="addReservationCheckInDate">
                     </div>
                     <div>
                         <label for="addReservationCheckInTime">Heure d'arrivée</label>
-                        <input type="time" name="addReservationCheckInTime" id="addReservationCheckInTime" value="15:30">
+                        <input type="time" name="addReservationCheckInTime" id="addReservationCheckInTime">
                     </div>
                     <div>
                         <label for="addReservationCheckOutDate">Jour de départ</label>
-                        <input type="date" name="addReservationCheckOutDate" id="addReservationCheckOutDate" value="2025-07-20">
+                        <input type="date" name="addReservationCheckOutDate" id="addReservationCheckOutDate">
                     </div>
                     <div>
                         <label for="addReservationCheckOutTime">Heure de départ</label>
-                        <input type="time" name="addReservationCheckOutTime" id="addReservationCheckOutTime" value="12:30">
+                        <input type="time" name="addReservationCheckOutTime" id="addReservationCheckOutTime">
                     </div>
                     <button type="submit">Enregistrer</button>
                 </form>
