@@ -33,7 +33,7 @@ const jwt = require('jsonwebtoken');
 /**
  * Add a new user
  * @async
- * @function
+ * @function add
  * @param {Object} reqBody - User's informations to add
  * @param {string} reqBody.lastName - User's last name
  * @param {string} reqBody.firstName - User's first name
@@ -43,7 +43,7 @@ const jwt = require('jsonwebtoken');
  * @returns {Promise&lt;Object>} Success message with user's first name and last name
  *
  * @throws {Error} EMAIL_ALREADY_EXIST - If a user already has the same email
- * @throws {Error} - When unexpected error occurs during user creation
+ * @throws {Error} - If an unexpected error occurs during user creation
 */
 async function add(reqBody) {
     const temp = ({
@@ -69,7 +69,7 @@ async function add(reqBody) {
 /**
  * User authentication (login)
  * @async
- * @function
+ * @function authenticate
  * @param {Object} reqBody - Connection informations to check
  * @param {string} reqBody.email - Email to check
  * @param {string} reqBody.password - Password to check
@@ -78,7 +78,7 @@ async function add(reqBody) {
  *
  * @throws {Error} INVALID_EMAIL - If email doesn't find a user
  * @throws {Error} INVALID_EMAIL_PASSWORD - If email/password combination is wrong
- * @throws {Error} - When unexpected error occurs during connection verification
+ * @throws {Error} - If an unexpected error occurs during connection verification
 */
 async function authenticate(reqBody) {
     const { email, password } = reqBody;
@@ -114,16 +114,16 @@ async function authenticate(reqBody) {
     }
 };
 
-/**
+/** 
  * Deletes a user from the database using their ID.
  * @async
- * @function
+ * @function deleteUser
  * @param {string} id - User's ID to delete
  * 
  * @returns {boolean} True if user deletion is a success
  *
  * @throws {Error} INVALID_ID - If ID doesn't find a user
- * @throws {Error} - When unexpected error occurs during user deletion
+ * @throws {Error} - If an unexpected error occurs during user deletion
 */
 async function deleteUser(id) {
     try {
@@ -140,15 +140,15 @@ async function deleteUser(id) {
 };
 
 /**
- * Get a specific user's informations using his ID.
+ * Retrieves specific user's informations by ID.
  * @async
- * @function
- * @param {string} id - User's ID to get informations
+ * @function get
+ * @param {string} id - The ID of the user to retrieve
  * 
- * @returns {Object} user - Contains the user's informations
+ * @returns {User} The user object without password and metadata fields
  *
- * @throws {Error} USER_NOT_FOUND - If ID doesn't find a user
- * @throws {Error} - When unexpected error occurs during user deletion
+ * @throws {Error} USER_NOT_FOUND - If no user is found with the provided ID
+ * @throws {Error} - If an unexpected error occurs during the query
 */
 async function get(id) {
     try {
@@ -163,18 +163,26 @@ async function get(id) {
     }
 };
 
-user = {
-    _id: '686101205b48028090c2a1a6',
-    catwayNumbe: 1,
-    clientName: "Jack Sparrow",
-    boatName: "Black Pearl",
-    checkIn: "2025-10-06T13:30:00.000Z",
-    checkOut: "2025-10-20T10:30:00.000Z",
-    createdAt: '2025-06-29T09:02:24.789+00:00',
-    updatedAt: '2025-06-29T09:02:24.789+00:00',
-    __v: 0
-}
-
+/**
+ * Updates a specific user's information by ID using the provided data.
+ * @async
+ * @function update
+ * @param {string} id - The ID of the user to retrieve
+ * @param {Object} reqBody - The informations for the user update
+ * @param {string} reqBody.email - The user's email for the update
+ * @param {string} reqBody.lastName - The user's last name for the update
+ * @param {string} reqBody.firstName - The user's first name for the update
+ * @param {string} [reqBody.currentPassword] - The user's current password used to protect the password update
+ * @param {string} [reqBody.newPassword] - The user's password for the update
+ * 
+ * @returns {boolean} True if the user is successfully updated
+ *
+ * @throws {Error} EMAIL_NAMES_REQUIRED - If email, last name or first name are missing
+ * @throws {Error} NEW_PASSWORD_EMPTY - If new password is empty but currentPassword provided
+ * @throws {Error} INVALID_CURRENT_PASSWORD - If the current password doesn't match the user's password
+ * @throws {Error} INVALID_ID - If no user is found in the database with provided ID
+ * @throws {Error} - If an unexpected error occurs during the update
+*/
 async function update(id, reqBody) {
     let currentPassword = reqBody.currentPassword;
     let newPassword = reqBody.newPassword;
@@ -222,13 +230,13 @@ module.exports = { add, authenticate, deleteUser, get, update};</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add">add</a></li><li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#checkJWT">checkJWT</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#get">get</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#add">add</a></li><li><a href="global.html#authenticate">authenticate</a></li><li><a href="global.html#checkJWT">checkJWT</a></li><li><a href="global.html#deleteCatway">deleteCatway</a></li><li><a href="global.html#deleteReservation">deleteReservation</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getAll">getAll</a></li><li><a href="global.html#update">update</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jul 03 2025 20:02:34 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Jul 04 2025 16:34:20 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>
