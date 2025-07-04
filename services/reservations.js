@@ -1,6 +1,28 @@
 const Reservation = require('../models/reservation');
 const Catway = require('../models/catway');
 
+/**
+ * Add a new reservation to the database
+ * @async
+ * @function add
+ * @param {Object} reqBody - Provided data to create the reservation
+ * @param {string} reqBody.clientName - The name of client
+ * @param {string} reqBody.boatName - The name of boat
+ * @param {number} reqBody.catwayNumber - The number of the reserved catway
+ * @param {string} reqBody.checkIn - The date of the check-in (ISO 8601 format)
+ * @param {string} reqBody.checkOut - The date of the check-out (ISO 8601 format)
+ * @param {string} catwayId - The ID of the reserved catway
+ * 
+ * @returns {boolean} True if the reservation is successfully created in the database
+ * 
+ * @throws {Error} INVALID_CATWAY_ID - If no catway is found with the provided ID
+ * @throws {Error} INVALID_CHECK_IN - If check-in date is before now
+ * @throws {Error} INVALID_CHECK_OUT - If check-out date is before check-in date
+ * @throws {Error} CHECK_IN_ALREADY_RESERVED - If check-in is during a period already reserved for this catway
+ * @throws {Error} CHECK_OUT_ALREADY_RESERVED - If check-out is during a period already reserved for this catway
+ * @throws {Error} RESERVATION_IN_REQUEST - If there is a period already reserved between check-in and check-out dates
+ * @throws {Error} If an unexpected error occurs during the reservation creation
+ */
 async function add(reqBody, catwayId) {
     try {
         const catway = await Catway.findById(catwayId);
@@ -34,6 +56,19 @@ async function add(reqBody, catwayId) {
     }
 };
 
+/**
+ * Deletes a reservation in the database
+ * @async
+ * @function deleteReservation
+ * @param {string} idCatway - The ID of the reserved catway
+ * @param {string} idReservation - The Id of the reservation to delete
+ * 
+ * @returns {boolean} True if the reservation is successfully deleted from the database
+ * 
+ * @throws {Error} CATWAY_NOT_FOUND - If no catway is found with the provided ID
+ * @throws {Error} RESERVATION_NOT_FOUND - If no reservation is found with the provided ID
+ * @throws {Error} If an unexpected error occurs during the reservation deletion
+ */
 async function deleteReservation(idCatway, idReservation) {
     try {
         const catway = await Catway.findById(idCatway);
@@ -49,6 +84,19 @@ async function deleteReservation(idCatway, idReservation) {
     }
 };
 
+/**
+ * Retrieves a specific reservation by the ID
+ * @async
+ * @function get
+ * @param {string} catwayId - The ID of the reserved catway
+ * @param {string} reservationId - The Id of the reservation to retrieve
+ * 
+ * @returns {boolean} True if the reservation is successfully retrieved from the database
+ * 
+ * @throws {Error} CATWAY_NOT_FOUND - If no catway is found with the provided ID
+ * @throws {Error} RESERVATION_NOT_FOUND - If no reservation is found with the provided ID
+ * @throws {Error} If an unexpected error occurs during the reservation research
+ */
 async function get(catwayId, reservationId) {
     try {
         const catway = await Catway.findById(catwayId);
@@ -62,6 +110,15 @@ async function get(catwayId, reservationId) {
     }
 };
 
+/**
+ * Retrieves all reservations from the database
+ * @async
+ * @function getAll
+ * 
+ * @returns {boolean} True if reservations are successfully retrieved from the database
+ * 
+ * @throws {Error} If an unexpected error occurs during the retrieval
+ */
 async function getAll() {
     try {
         const reservations = await Reservation.find().select('-__v -createdAt -updatedAt');
@@ -72,6 +129,32 @@ async function getAll() {
     }
 };
 
+/**
+ * Updates a reservation in the database
+ * @async
+ * @function update
+ * @param {string} idCatway - The ID of the reserved catway
+ * @param {string} idReservation - The ID of the reservation to update
+ * @param {Object} reqBody - Provided data to update the reservation
+ * @param {string} reqBody.clientName - The name of client
+ * @param {string} reqBody.boatName - The name of boat
+ * @param {number} reqBody.catwayNumber - The number of the reserved catway
+ * @param {string} reqBody.checkIn - The date of the check-in (ISO 8601 format)
+ * @param {string} reqBody.checkOut - The date of the check-out (ISO 8601 format)
+ * 
+ * @returns {boolean} True if the reservation is successfully updated in the database
+ * 
+ * @throws {Error} ALL_FIELDS_REQUIRED - If one of the reqBody properties is missing
+ * @throws {Error} INVALID_CATWAY_IN_URL - If no catway is found with the provided ID
+ * @throws {Error} INVALID_CATWAY_NUMBER - If no catway is found with the catway number provided in reqBody
+ * @throws {Error} RESERVATION_NOT_FOUND - If no reservation is found with the provided ID
+ * @throws {Error} CHECK_IN_ALREADY_RESERVED - If check-in is during a period already reserved for this catway
+ * @throws {Error} CHECK_OUT_ALREADY_RESERVED - If check-out is during a period already reserved for this catway
+ * @throws {Error} RESERVATION_IN_REQUEST - If there is a period already reserved between check-in and check-out dates
+ * @throws {Error} INVALID_CHECK_IN - If check-in date is before now
+ * @throws {Error} INVALID_CHECK_OUT - If check-out date is before check-in date
+ * @throws {Error} If an unexpected error occurs during the reservation update
+ */
 async function update(idCatway, idReservation, reqBody) {
     try {
         if (!reqBody.clientName || !reqBody.boatName || !reqBody.catwayNumber || !reqBody.checkIn || !reqBody.checkOut ) {
