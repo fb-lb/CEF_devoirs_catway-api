@@ -32,20 +32,47 @@ router.get('/liste-des-catways', private.checkJWT, async (req, res, next) => {
     } 
 });
 
+router.get('/catway/:id', private.checkJWT, async (req, res, next) => {
+    try {
+        const catway = await serviceCatways.get(req.params.id);
+        res.render('catway-details', { catway });
+    } catch(error) {
+        const catway = {'message' : 'Nous ne parvenons pas à récupérer les détails du catway.'};
+        res.render('catway-details', { catway });
+    }
+});
+
 router.get('/liste-des-reservations', private.checkJWT, async (req, res, next) => {
     try {
         const reservations = await serviceReservations.getAll();
+        const catways = await serviceCatways.getAll();
         reservations.forEach(reservation => {
             const checkIn = new Date(reservation.checkIn);
             reservation.checkIn = checkIn.toLocaleString().slice(0, -3);
             const checkOut = new Date(reservation.checkOut);
             reservation.checkOut = checkOut.toLocaleString().slice(0, -3);
+            let catway = catways.find(c => c.catwayNumber == reservation.catwayNumber);
+            reservation.catwayId = catway._id;
         });
         res.render('reservations-list', { reservations });
     } catch (error) {
         const reservations = {'message' : 'Nous ne parvenons pas à récupérer la liste des réservations.'};
         res.render('reservations-list', { reservations });
     } 
+});
+
+router.get('/catway/:id/reservation/:idReservation', private.checkJWT, async (req, res, next) => {
+    try {
+        const reservation = await serviceReservations.get(req.params.id, req.params.idReservation);
+        const checkIn = new Date(reservation.checkIn); 
+        reservation.checkIn = checkIn.toLocaleString().slice(0, -3);
+        const checkOut = new Date(reservation.checkOut);
+        reservation.checkOut = checkOut.toLocaleString().slice(0, -3);
+        res.render('reservation-details', { reservation });
+    } catch(error) {
+        const reservation = {'message' : 'Nous ne parvenons pas à récupérer les détails de la réservation.'};
+        res.render('reservation-details', { reservation });
+    }
 });
 
 router.use('/users', userRoute);

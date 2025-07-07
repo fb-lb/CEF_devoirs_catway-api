@@ -1,0 +1,12 @@
+<% layout('layout') %>
+
+<main>
+    <h1>Détails du catway</h1>
+    <p class="error"><%= catway.message %></p>
+    <div>
+        <p>Identifiant du catway : <%= catway._id %></p>
+        <p>Numéro du catway : <%= catway.catwayNumber %></p>
+        <p>&Eacutetat du catway : <%= catway.catwayState %></p>
+        <p>Type : <%= catway.type %></p>
+    </div>
+</main>
