@@ -12,10 +12,12 @@
     <% styles.forEach(function(href) { %>
     <link rel="stylesheet" href="<%= href %>">
     <% }) %>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
     <script src="/javascripts/header.js" defer></script>
     <% scripts.forEach(function(src) { %>
     <script type="module" src="<%= src %>" defer></script>
     <% }) %>
+    <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js" defer></script>
 </head>
 <body>
   <%- include('header')%>

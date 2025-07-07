@@ -63,7 +63,7 @@ router.patch('/:id/reservations/:idReservation', private.checkJWT, async (req, r
         } else if (error.message == 'INVALID_CATWAY_IN_URL') {
             return res.status(404).json({ 'message' : "L'identifiant de catway renseigné dans l'URL ne correspond à aucun catway."});
         } else if (error.message === 'INVALID_CATWAY_NUMBER') {
-            return res.status(403).json({'message': "Attention ce numéro de catway ne correspond à aucun catway."});
+            return res.status(404).json({'message': "Attention ce numéro de catway ne correspond à aucun catway."});
         } else if (error.message === 'CHECK_IN_ALREADY_RESERVED') {
              return res.status(403).json({'message': "L'arrivée a lieu sur une réservation déjà enregistrée."});
         } else if (error.message === 'CHECK_OUT_ALREADY_RESERVED') {

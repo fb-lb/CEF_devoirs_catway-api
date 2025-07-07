@@ -1,0 +1,1179 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/mine-92b/catway_api/1.0.0
+info:
+  version: "1.0.0"
+  title: Catway-api
+  description: The API for the catway management and reservation in Russell harbor.
+paths:
+  /users:  
+    post:
+      tags:
+        - Users
+      description: Create a new user in the database
+      operationId: addUser
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - lastName
+                - firstName
+                - email
+                - password
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                  description: Must be unique, two users can't have the same email
+                password:
+                  type: string
+              example:
+                firstName: "Jean"
+                lastName: "Dupont"
+                email: "jean-dupont@gmail.com"
+                password: "strong-password1234"
+      responses:
+        '201':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "L'utilisateur Jean Dupont a bien été ajouté"
+        '403':
+          description: Email already used by a registered user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Un utilisateur utilise déjà cette adresse mail"
+        '400':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "L'utilisateur Jean Dupont n'a pas pu être ajouté. Assurez-vous d'avoir rempli tous les champs."
+  '/users/{id}':
+    get:
+      tags:
+        - Users
+      description: Returns user's data by ID
+      operationId: getUser
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retrieved user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  lastName:
+                    type: string
+                  firstName:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                example:
+                  _id: "68375a1dea0fe594ba3afaf1"
+                  lastName: "Dupont"
+                  firstName: "Jean"
+                  email: "jean-dupont@gmail.com"
+        '404': 
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Cet identifiant ne correspond à aucun utilisateur"
+        '501': 
+          description: Unexpected Error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+    patch:
+      tags:
+        - Users
+      description: Update user with provided data
+      operationId: updateUser
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - lastName
+                - firstName
+              properties:
+                email:
+                  type: string
+                  format: email
+                lastName:
+                  type: string
+                firstName:
+                  type: string
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+              example:
+                email: "john.doe@gmail.com"
+                lastName: "Doe"
+                firstName: "John"
+                currentPassword: "NotEnoughStrongPassword"
+                newPassword: "StrongerPassword"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '204':
+          description: The user is successfully updated
+        '400':
+          description: A request body condition is not satisfied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                missingFields:
+                  description: Email, last name or first name is/are missing
+                  value:
+                    message: "Les champs Email, Nom et Prénom sont requis."
+                invalidNewPassword:
+                  description: New password must contain at least one character
+                  value:
+                    message: "Le nouveau mot de passe doit contenir au moins un caractère."
+        '403':
+          description: Invalid current password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Mot de passe actuel incorrect."
+        '404':
+          description: User not found with provided ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Cet identifiant ne correspond à aucun utilisateur"
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+    delete:
+      tags:
+        - Users
+      description: Delete user by ID
+      operationId: deleteUser
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User is successfully deleted
+        '404':
+          description: User not found with provided data
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                example:
+                  message : "Cet identifiant ne correspond à aucun utilisateur"
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+  /users/authenticate:
+    post:
+      tags:
+        - Authenticate
+      description: Check authentication by email and password, then send cookies
+      operationId: authenticateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              example:
+                email: "jean.dupont@gmail.com"
+                password: "strongPassword1234"
+      responses:
+        '200':
+          description: User is successfully authenticated
+          headers:
+            Set-Cookie:
+              description: >
+                Three cookies in response send :
+                - ***token***: Authenticate JWT token, httpOnly, Secured, SameSite=Lax
+                - ***firstName***: User first name (non httpOnly)
+                - ***lastName***: User last name (non httpOnly)
+                
+                Example :
+                ```
+                Set-Cookie: token=eyJhbGciOi...; HttpOnly; Secure; SameSite=Lax; Path=/;
+                Set-Cookie: firstName=Jean; Secure; SameSite=Lax; Path=/;
+                Set-Cookie: lastName=Dupont; Secure; SameSite=Lax; path=/;
+                ```
+              schema:
+                type: array
+                items:
+                  type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Vous êtes connectés Jean Dupont."
+        '403':
+          description: Invalid email and/or password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Email et/ou mot de passe incorrect"
+        '404':
+          description: Invalid email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Email incorrect"
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+  /users/logout:
+    post:
+      tags:
+        - Logout
+      description: Delete cookies created during authentication to log the user out
+      operationId: logout
+      parameters:
+          - name: token
+            in: cookie
+            description: JWT token in Bearer format
+            schema:
+              type: string
+          - name: firstName
+            in: cookie
+            description: User first name
+            schema:
+              type: string
+          - name: lastName
+            in: cookie
+            description: User last name
+            schema:
+              type: string
+      responses:
+        '200':
+          description: User successfully logged out
+          headers:
+            Set-Cookie:
+              description: >
+                Cookies deleted :
+                - `token` (httpOnly, Secure)
+                - `firstName`
+                - `lastName`
+                
+                Example :
+                ```
+                Set-Cookie: token=; Max-Age=0; Path=/; SameSite=Lax; HttpOnly; Secure
+                Set-Cookie: firstName=; Max-Age=0; Path=/; SameSite=Lax; Secure
+                Set-Cookie: lastName=; Max-Age=0; Path=/; SameSite=Lax; Secure
+                ```
+              schema:
+                type: array
+                items:
+                  type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Vous êtes bien déconnecté."
+  /catways:
+    post:
+      tags:
+        - Catways
+      description: Add new catway to the database
+      operationId: addCatway
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - catwayNumber
+                - catwayState
+                - type
+              properties:
+                catwayNumber:
+                  description: Two catways can't have the same catway number
+                  type: integer
+                  format: int32
+                  minimum: 1
+                catwayState:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - short
+                    - long
+                  default: short
+              example: 
+                catwayNumber: 1
+                catwayState: "bon état"
+                type: "short"
+      responses:
+        '200':
+          description: Catway successfully created into the database
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Le catway a bien été enregistré"
+        '403':
+          description: A registered catway already has this catway number
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Un catway possède déjà le même numéro"
+        '400':
+          description: An unexpected error occurs, catway is not created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Le catway n'a pas pu être ajouté. Assurez-vous d'avoir rempli tous les champs."
+  /catways/all:
+    get:
+      tags:
+        - Catways
+      description: Retrieves all the catways in the database
+      operationId: getAllCatways
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Return all the catways with their data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    catwayNumber:
+                      type: integer
+                      format: int32
+                      minimum: 1
+                    type:
+                      type: string
+                      enum:
+                        - short
+                        - long
+                    catwayState:
+                      type: string
+                example:
+                - _id: "6860111b45ed82f391d7c26a"
+                  catwayNumber: 1
+                  type: "short"
+                  catwayState: "bon état"
+                - _id: "6837302a727adfc4b55930de"
+                  catwayNumber: 2
+                  type: "long"
+                  catwayState: "Une planche est abîmée"
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+  '/catways/{id}':
+    get:
+      description: Retrieve a specific catway in the database by ID
+      tags:
+        - Catways
+      operationId: getCatway
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: token
+          required: true
+          description: JWT token in Bearer format
+          in: cookie
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns the catway found wit the provided ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  catwayNumber:
+                    type: integer
+                    format: int32
+                    minimum: 1
+                  type:
+                    type: string
+                    enum:
+                      - short
+                      - long
+                  catwayState:
+                    type: string
+                example:
+                  _id: "6860113b45cd82f391d7c26e"
+                  catwayNumber: 1
+                  type: "short"
+                  catwayState: "bon état"
+        '404':
+          description: No catway found with the provided ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Cet identifiant ne correspond à aucun catway."
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+    patch:
+      tags:
+        - Catways
+      description: Updates a specific user data by the ID
+      operationId: updateCatway
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - catwayNumber
+                - type
+                - catwayState
+              properties:
+                catwayNumber:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                type:
+                  type: string
+                  enum:
+                    - short
+                    - long
+                  default: short
+                catwayState:
+                  type: string
+              example:
+                catwayNumber: 1
+                type: "short"
+                catwayState: "bon état"
+      responses:
+        '204':
+          description: Catway successfully updated in the database
+        '404':
+          description: No catway found with the provided ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Cet identifiant ne correspond à aucun catway."
+        '400':
+          description: One of the required fields in request body is missing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Tous les champs sont requis."
+        '403':
+            description: The catway number in the request body is already assigned to another catway in the database
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  example:
+                    message: "Ce numéro est déjà attribué à un autre catway"
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+    delete:
+      tags:
+        - Catways
+      description: Deletes a scecific catway in the database by the ID
+      operationId: deleteCatway
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Specific catway successfully deleted from the database
+        '404':
+          description: No catway found with the provided ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Cet identifiant ne correspond à aucun catway."
+        '403':
+          description: The ID must contain 24 characters including letters and numbers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "L'identifiant doit faire 24 caractères et doit contenir des chiffres et des lettres."
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+  '/catways/{id}/reservations':
+    post:
+      description: Add a new reservation into the database
+      tags:
+        - Reservations
+      operationId: addReservation
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                  - catwayNumber
+                  - clientName
+                  - boatName
+                  - checkIn
+                  - checkOut
+              properties:
+                catwayNumber:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                clientName:
+                  type: string
+                boatName:
+                  type: string
+                checkIn:
+                  type: string
+                  format: date-time
+                checkOut:
+                  type: string
+                  format: date-time
+              example:
+                catwayNumber: 1
+                clientName: "John Doe"
+                boatName: "The Boat"
+                checkIn: "2025-07-15T14:30:00.000Z"
+                checkOut: "2025-08-20T17:00:00.000Z"
+      responses:
+        '204':
+          description: Reservations successfully created into the database
+        '403':
+          description: Forbidden – reservation rejected for one of several reasons
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type : string
+              examples:
+                invalidCatwayId:
+                  summary: No catway found with the provided ID
+                  value:
+                    message: "Attention cet identifiant de catway ne correspond à aucun catway."
+                checkInAlreadyReserved:
+                  summary: Check-in is during a period already reserved
+                  value:
+                    message: "L'arrivée a lieu sur une réservation déjà enregistrée."
+                checkOutAlreadyReserved:
+                  summary: Check-out is during a period already reserved
+                  value:
+                    message: "Le départ a lieu sur une réservation déjà enregistrée."
+                periodAlreadyReserved:
+                  summary: There is a period already reserved between check-in and check-out
+                  value:
+                    message: "Une réservation est déjà enregistrée au cours de la période demandée."
+                invalidCheckIn:
+                  summary: Check-in can't be before now
+                  value:
+                    message: "Attention la date et l'heure d'arrivée ne peuvent pas être antérieures à maintenant."
+                invalidCheckOut:
+                  summary: Check-out can't be before check-in
+                  value:
+                    message: "La date et l'heure de départ ne peuvent pas être antérieures à l'heure et la date d'arrivée."
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type : string
+                example:
+                  message: "La réservation n'a pas pu être ajoutée. Assurez-vous d'avoir rempli tous les champs."
+  /catways/all/reservations/all:
+    get:
+      description: Returns all reservations from the database
+      tags:
+        - Reservations
+      operationId: getAllReservations
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservations successfully retrieved from the database
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    catwayNumber:
+                      type: integer
+                      format: int32
+                      minimum: 1
+                    clientName:
+                      type: string
+                    boatName:
+                      type: string
+                    checkIn:
+                      type: string
+                      format: date-time
+                    checkOut:
+                      type: string
+                      format: date-time
+                example:
+                  - _id: "686101225b48028090c2a1a6"
+                    catwayNumber: 1
+                    clientName: "John Doe"
+                    boatName: "Titanic"
+                    checkIn: "2025-07-15T12:00:00.000Z"
+                    checkOut: "2025-08-20T17:00:00.000Z"
+                  - _id: "786101205b48028090c2a1a6"
+                    catwayNumber: 2
+                    clientName: "James Smith"
+                    boatName: "Black Pearl"
+                    checkIn: "2025-07-20T15:00:00.000Z"
+                    checkOut: "2025-08-12T09:00:00.000Z"
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+  '/catways/{id}/reservations/{idReservation}':
+    get:
+      tags:
+        - Reservations
+      description: Returns a specific reservation by ID from the database
+      operationId: getReservation
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: idReservation
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation successfully retrieved in the database
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  catwayNumber:
+                    type: integer
+                    format: int32
+                    minimum: 1
+                  type:
+                    type: string
+                    enum:
+                      - short
+                      - long
+                  catwayState:
+                    type: string
+                example:
+                  _id: 686101205b42028090c2a1a6
+                  catwayNumber: 1
+                  type: "short"
+                  catwayState: "bon état"
+        '404':
+         description: Not found - data not found because of a wrong ID
+         content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+            examples:
+              reservationNotFound:
+                summary: No reservation found with the provided ID
+                value:
+                  message: "L'identifiant de la réservation ne correspond à aucune réservation pour ce catway."
+              catwayNotFound:
+                summary: No catway found with the provided ID
+                value:
+                  message: "L'identifiant du catway ne correspond à aucun catway."
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+    patch:
+      description: Updates a specific reservation data by the ID
+      tags:
+        - Reservations
+      operationId: updateReservation
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idReservation
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - catwayNumber
+                - clientName
+                - boatName
+                - checkIn
+                - checkOut
+              properties:
+                catwayNumber:
+                  type: integer
+                  format: int32
+                  minimum: 1
+                clientName:
+                  type: string
+                boatName:
+                  type: string
+                checkIn:
+                  type: string
+                  format: date-time
+                checkOut:
+                  type: string
+                  format: date-time
+              example:
+                catwayNumber: 1
+                clientName: "John Doe"
+                boatName: "The Boat"
+                checkIn: "2025-07-15T14:00:00.000Z"
+                checkOut: "2025-08-14T13:00:00.000Z"
+      responses:
+        '204':
+          description: Reservation successfully updated in the database
+        '400':
+          description: A required request body field is missing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Tous les champs sont requis."
+        '404':
+          description: Element not found with provided data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                reservationNotFound:
+                  summary: Reservation not found with provided ID
+                  value:
+                    message: "Tous les champs sont requis."
+                catwayNotFoundWithID:
+                  summary: Catway not found with provided ID
+                  value:
+                    message: "L'identifiant de catway renseigné dans l'URL ne correspond à aucun catway."
+                catwayNotFoundWithNumber:
+                  summary: Catway not found with provided number
+                  value:
+                    message: "Attention ce numéro de catway ne correspond à aucun catway."
+        '403':
+          description: Forbidden – reservation rejected for one of several reasons
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type : string
+              examples:
+                checkInAlreadyReserved:
+                  summary: Check-in is during a period already reserved
+                  value:
+                    message: "L'arrivée a lieu sur une réservation déjà enregistrée."
+                checkOutAlreadyReserved:
+                  summary: Check-out is during a period already reserved
+                  value:
+                    message: "Le départ a lieu sur une réservation déjà enregistrée."
+                periodAlreadyReserved:
+                  summary: There is a period already reserved between check-in and check-out
+                  value:
+                    message: "Une réservation est déjà enregistrée au cours de la période demandée."
+                invalidCheckIn:
+                  summary: Check-in can't be before now
+                  value:
+                    message: "Attention la date et l'heure d'arrivée ne peuvent pas être antérieures à maintenant."
+                invalidCheckOut:
+                  summary: Check-out can't be before check-in
+                  value:
+                    message: "La date et l'heure de départ ne peuvent pas être antérieures à l'heure et la date d'arrivée."
+        '501':
+          description: An unexpected error occurs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse501'
+    delete:
+      tags:
+        - Reservations
+      description: Deletes a specific reservation into the database
+      operationId: deleteReservation
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idReservation
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: cookie
+          required: true
+          description: JWT token in Bearer format
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Catway successfully deleted
+        '404':
+          description: Element not found with provided data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                reservationNotFound:
+                  summary: Reservation not found with provided ID
+                  value:
+                    message: "Cet identifiant ne correspond à aucune réservation faite sur ce catway."
+                catwayNotFoundWithID:
+                  summary: Catway not found with provided ID
+                  value:
+                    message: "L'identifiant de catway renseigné dans l'URL ne correspond à aucun catway."
+        '403':
+          description: The ID must contain 24 characters including letters and numbers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "L'identifiant doit faire 24 caractères et doit contenir des chiffres et des lettres."
+components:
+  schemas:
+    ApiResponse501:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Nous ne parvenons pas à nous connecter à notre base de données. Veuillez réessayer ultérieurement."
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token

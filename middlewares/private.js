@@ -56,7 +56,7 @@ exports.checkJWT = async (req, res, next) => {
             }
         });
     } else {
-        if (req.path === '/tableau-de-bord' || req.path.contains('catway') || req.path.contains('reservation')) {
+        if (req.path === '/tableau-de-bord' || req.path.includes('catway') || req.path.includes('reservation')) {
             return res.redirect('/');
         }
         message = { 'message': 'Token manquant. Veuillez vous reconnecter'};

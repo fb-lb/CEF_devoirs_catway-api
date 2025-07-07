@@ -70,7 +70,6 @@ router.delete('/:id', private.checkJWT, async (req, res) => {
 router.post('/authenticate', async (req, res) => {
     try {
         const response = await service.authenticate(req.body);
-        console.log(response);
         res.cookie('token', response.token, {
             sameSite: 'Lax',
             httpOnly: true,
@@ -98,7 +97,6 @@ router.post('/authenticate', async (req, res) => {
         } else if (error.message === 'INVALID_EMAIL') {
             return res.status(404).json({ 'message': 'Email incorrect'});
         } else {
-            console.log(error);
             return res.status(501).json({ 'message': 'Utilisateur introuvable, avez-vous rempli tous les champs ?'});
         }
     }

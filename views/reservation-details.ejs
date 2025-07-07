@@ -1,0 +1,14 @@
+<% layout('layout') %>
+
+<main>
+    <h1>Détails de la réservation</h1>
+    <p class="error"><%= reservation.message %></p>
+    <div>
+        <p>Identifiant de la réservation : <%= reservation._id %></p>
+        <p>Numéro du catway réservé : <%= reservation.catwayNumber %></p>
+        <p>Nom du client : <%= reservation.clientName %></p>
+        <p>Nom du bateau : <%= reservation.boatName %></p>
+        <p>Date d'arrivée: <%= reservation.checkIn %></p>
+        <p>Date de départ : <%= reservation.checkOut %></p>
+    </div>
+</main>

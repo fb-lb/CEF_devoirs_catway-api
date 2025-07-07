@@ -2,6 +2,7 @@
 
 <main>
     <h1>Liste des catways</h1>
+    <p class="error"><%= reservations.message %></p>
     <table id="reservationsList">
         <thead>
             <tr>
@@ -11,6 +12,7 @@
                 <th>Numéro du catway</th>
                 <th>Date d'arrivée</th>
                 <th>Date de départ</th>
+                <th>Détails</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +24,7 @@
                 <td><%= reservation.catwayNumber %></td>
                 <td><%= reservation.checkIn %></td>
                 <td><%= reservation.checkOut %></td>
+                <td><a href="/catway/<%= reservation.catwayId %>/reservation/<%= reservation._id%>">Voir la fiche</a></td>
             </tr>
             <% }) %>
         </tbody>
