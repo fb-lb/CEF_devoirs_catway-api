@@ -12,6 +12,11 @@ router.get('/', function(req, res, next) {
     res.render('home-page', { scripts: ['/javascripts/home-page.js'] });
 });
 
+router.get('/documentation-api', (req, res, next) => {
+    let scripts = ['/javascripts/api-doc.js'];
+    res.render('api-doc', { scripts: scripts });
+});
+
 router.get('/tableau-de-bord',private.checkJWT , (req, res, next) => {
     let scripts = ['/javascripts/dashboard/dashboard-users.js', '/javascripts/dashboard/dashboard-catways.js', '/javascripts/dashboard/dashboard-reservations.js'];
     res.render('dashboard', { scripts: scripts });
