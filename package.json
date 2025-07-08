@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "app": "cross-env DEBUG=6-first-api-restful:* env-cmd -f ./env/.env.dev nodemon --inspect ./bin/www",
+    "start": "env-cmd -f ./env/.env.prod node ./bin/www",
+    "app": "cross-env DEBUG=catway-api:* env-cmd -f ./env/.env.dev nodemon --inspect ./bin/www",
     "test": "mocha",
     "dev": "run-s test app",
     "doc": "jsdoc -c jsdoc.json"
@@ -16,6 +16,7 @@
     "debug": "~2.6.9",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
+    "env-cmd": "^10.1.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "http-errors": "~1.6.3",
@@ -27,7 +28,6 @@
   "devDependencies": {
     "chai": "^5.2.0",
     "cross-env": "^7.0.3",
-    "env-cmd": "^10.1.0",
     "jsdoc": "^4.0.4",
     "mocha": "^11.7.1",
     "nodemon": "^3.1.10",
