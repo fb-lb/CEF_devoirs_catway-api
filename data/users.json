@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "68375a1dea0fe594ba3afaf1"
+  },
+  "lastName": "Dupont",
+  "firstName": "Jéan",
+  "email": "jean-dupont@gmail.com",
+  "password": "$2b$10$PXADD30XMRfJWrT7.rc.VOeJoVg0OMPFKJkSB0N35IezuSBLCMVg2",
+  "createdAt": {
+    "$date": "2025-05-28T18:46:53.902Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-28T18:46:53.902Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6837602b727adfc4b55930dc"
+  },
+  "lastName": "Dupont",
+  "firstName": "Jean",
+  "email": "jean.dupont@gmail.com",
+  "password": "$2b$10$BWcfcr7gWlK.2TRLr4RTquhF7vcZAE1jnCndbJlJQrDY7ppuv/aZC",
+  "createdAt": {
+    "$date": "2025-05-28T19:12:43.849Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-28T19:12:43.849Z"
+  },
+  "__v": 0
+}]
