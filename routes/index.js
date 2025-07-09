@@ -79,6 +79,7 @@ router.use('/users', userRoute);
 router.use('/catways', catwayRoute);
 router.use('/catways', reservationRoute);
 
+// Redirection for ressources 404 not found
 router.use((req, res, next) => {
     res.status(404);
     res.render('404');
