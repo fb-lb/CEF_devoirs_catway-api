@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const mongoose = require('mongoose');
 const service = require('../services/catways');
 const Catway = require('../models/catway');
+const Reservation = require('../models/reservation');
 
 describe('Catway Service - getAll', () => {
     it('should return all catways data', async () => {
@@ -174,14 +175,17 @@ describe('Catway Service - update', () => {
 });
 
 describe('Catway Service - delete', () => {
-    let id;
-    let catway;
+    let id, catway, reservation;
 
     beforeEach(() => {
         catway = {
-            _id: new mongoose.Types.ObjectId()
+            _id: new mongoose.Types.ObjectId(),
+            catwayNumber: 1
         };
         id = catway._id.toString();
+        reservation = {
+            _id: new mongoose.Types.ObjectId(),
+        };
     });
 
     afterEach(() => {
@@ -190,11 +194,13 @@ describe('Catway Service - delete', () => {
 
     it('should return true when catway is deleted', async () => {
         sinon.stub(Catway, 'findById').resolves(catway);
+        sinon.stub(Reservation, 'findOne').resolves(null);
         sinon.stub(Catway, 'deleteOne').resolves(true);
 
         const response = await service.deleteCatway(id);
         
         expect(Catway.findById.calledOnceWith(id)).to.be.true;
+        expect(Reservation.findOne.calledOnceWith({ catwayNumber: catway.catwayNumber })).to.be.true;
         expect(Catway.deleteOne.calledOnceWith({_id: id})).to.be.true;
         expect(response).to.be.true;
     });
@@ -209,6 +215,21 @@ describe('Catway Service - delete', () => {
             expect(Catway.findById.calledOnceWith(id)).to.be.true;
             expect(error).to.be.instanceOf(Error);
             expect(error.message).to.equal('CATWAY_NOT_FOUND');
+        }
+    });
+
+    it('should throw an error with CATWAY_RESERVED message', async () => {
+        sinon.stub(Catway, 'findById').resolves(catway);
+        sinon.stub(Reservation, 'findOne').resolves(reservation);
+
+        try {
+            await service.deleteCatway(id);
+            throw new Error("in case that error is not thrown");
+        } catch (error) {
+            expect(Catway.findById.calledOnceWith(id)).to.be.true;
+            expect(Reservation.findOne.calledOnceWith({ catwayNumber: catway.catwayNumber })).to.be.true;
+            expect(error).to.be.instanceOf(Error);
+            expect(error.message).to.equal('CATWAY_RESERVED');
         }
     });
 });

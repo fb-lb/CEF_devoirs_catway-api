@@ -64,6 +64,8 @@ router.delete('/:id', private.checkJWT, async (req, res) => {
     } catch (error) {
         if (error.message === 'CATWAY_NOT_FOUND') {
             return res.status(404).json({'message': 'Cet identifiant ne correspond à aucun catway'});
+        } else if (error.message === 'CATWAY_RESERVED') {
+            return res.status(409).json({ 'message': 'Ce catway ne peut être supprimé pour le moment car il apparaît dans au moins une réservation. Modifiez/Supprimez cette/ces réservation(s) pour pouvoir supprimer ce catway.' });
         } else if (error.message.includes('Cast to ObjectId failed')) {
             return res.status(403).json({ 'message': "L'identifiant doit faire 24 caractères et doit contenir des chiffres et des lettres." });
         } else {

@@ -736,6 +736,17 @@ paths:
                     type: string
                 example:
                   message: "L'identifiant doit faire 24 caractères et doit contenir des chiffres et des lettres."
+        '409':
+          description: Catway is used in a reservation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Ce catway ne peut être supprimé pour le moment car il apparaît dans au moins une réservation. Modifiez/Supprimez cette/ces réservation(s) pour pouvoir supprimer ce catway."
         '501':
           description: An unexpected error occurs
           content:
