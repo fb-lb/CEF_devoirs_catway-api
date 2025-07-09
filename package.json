@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "env-cmd -f ./env/.env.prod node ./bin/www",
+    "start": "node ./bin/www",
     "app": "cross-env DEBUG=catway-api:* env-cmd -f ./env/.env.dev nodemon --inspect ./bin/www",
     "test": "mocha",
     "dev": "run-s test app",
