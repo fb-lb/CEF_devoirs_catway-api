@@ -1,8 +1,28 @@
 <% layout('layout') %>
 
 <main>
-    <h1>Titre</h1>
-    <p>Welcome</p>
+    <h1>Port de plaisance de Russell</h1>
+
+    <p>
+        Voici notre application de gestion du port de plaisance Russell. Il est possible ici de créer de nouveaux utilisateurs,
+        qui une fois connectés peuvent accéder au tableau de bord. Sur ce tableau de bord il est possible de créer, modifier,
+        consulter, supprimer des catway et il est aussi possible de créer, modifier, consulter et supprimer des réservations.
+    </p>
+    <p>
+        Une fois connecté vous pourrez accéder à liste complète des catways et des réservations. Depuis ces listes il est possible
+        de consulter le détail de chacun des catways et de chacune des réservations.
+    </p>
+    <p>
+        Ici pour simplifier l'accès à l'application (dans un but pédagogique) nous avons laissé des valeurs par défaut dans le formulaire
+        de connexion qui permettent de se connecter directement à l'application.
+    </p>
+    <p>
+        Une documentation de l'API est aussi disponible à tous (connecté ou non) via le menu ci-dessus. Vous y trouverez le détail
+        de chacun des routes qu'il est possible d'exploiter via un client API comme Postman.
+    </p>
+    <p>Enjoy</p>
+
+    <h2>Formulaire de connexion</h2>
     <form action="/users/authenticate" method="post" id="authenticateForm">
         <div>
             <label for="email">E-mail</label>
