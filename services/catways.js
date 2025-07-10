@@ -1,4 +1,5 @@
 const Catway = require('../models/catway');
+const Reservation = require('../models/reservation');
 
 /**
  * Add a new catway
@@ -41,18 +42,20 @@ async function add(reqBody) {
  * 
  * @returns {boolean} True if the catway is successfully deleted
  * 
+ * @throws {Error} CATWAY_RESERVED - If this catway is used in a reservation
  * @throws {Error} CATWAY_NOT_FOUND - If no catway is found with the provided ID
  * @throws {Error} If an unexpected error occurs during the catway deletion
  */
 async function deleteCatway(id) {
     try {
         const catway = await Catway.findById(id);
-        if (catway) {
-            await Catway.deleteOne({_id: id});
-            return true;
-        } else {
-            throw new Error('CATWAY_NOT_FOUND');
-        }
+        if (!catway) throw new Error('CATWAY_NOT_FOUND');
+
+        const reservations = await Reservation.findOne({catwayNumber: catway.catwayNumber});
+        if (reservations) throw new Error('CATWAY_RESERVED');
+        
+        await Catway.deleteOne({_id: id});
+        return true;
     } catch (error) {
         throw error;
     }

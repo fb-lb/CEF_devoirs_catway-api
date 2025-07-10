@@ -76,7 +76,6 @@ Inside this folder create a file '.env.dev' put :
 PORT = your_front_end_port
 URL_FRONT = your_front_url
 URL_MONGO = 'mongodb://username:password@database_URI/database-name'
-SESSION_SECRET = you_secret_key_for_express_session
 SECRET_KEY = your_jwt_secret_key
 SECURE_COOKIE = false
 ```

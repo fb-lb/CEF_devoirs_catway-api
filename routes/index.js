@@ -48,9 +48,9 @@ router.get('/liste-des-reservations', private.checkJWT, async (req, res, next) =
         const catways = await serviceCatways.getAll();
         reservations.forEach(reservation => {
             const checkIn = new Date(reservation.checkIn);
-            reservation.checkIn = checkIn.toLocaleString().slice(0, -3);
+            reservation.checkIn = checkIn.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }).slice(0, -3);
             const checkOut = new Date(reservation.checkOut);
-            reservation.checkOut = checkOut.toLocaleString().slice(0, -3);
+            reservation.checkOut = checkOut.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }).slice(0, -3);
             let catway = catways.find(c => c.catwayNumber == reservation.catwayNumber);
             reservation.catwayId = catway._id;
         });
@@ -65,9 +65,9 @@ router.get('/catway/:id/reservation/:idReservation', private.checkJWT, async (re
     try {
         const reservation = await serviceReservations.get(req.params.id, req.params.idReservation);
         const checkIn = new Date(reservation.checkIn); 
-        reservation.checkIn = checkIn.toLocaleString().slice(0, -3);
+        reservation.checkIn = checkIn.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }).slice(0, -3);
         const checkOut = new Date(reservation.checkOut);
-        reservation.checkOut = checkOut.toLocaleString().slice(0, -3);
+        reservation.checkOut = checkOut.toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }).slice(0, -3);
         res.render('reservation-details', { reservation });
     } catch(error) {
         const reservation = {'message' : 'Nous ne parvenons pas à récupérer les détails de la réservation.'};
@@ -78,5 +78,11 @@ router.get('/catway/:id/reservation/:idReservation', private.checkJWT, async (re
 router.use('/users', userRoute);
 router.use('/catways', catwayRoute);
 router.use('/catways', reservationRoute);
+
+// Redirection for ressources 404 not found
+router.use((req, res, next) => {
+    res.status(404);
+    res.render('404');
+})
 
 module.exports = router;
