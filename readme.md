@@ -25,11 +25,11 @@ The dashboard and detailed pages (catways or reservations) are protected by auth
 - IDE : [VSCode](https://code.visualstudio.com/)
 - [NodeJs](https://nodejs.org/en/download)
 
-- Express : 4.21.2
+- Express
 - HTML / CSS for EJS templates
 - JavaScript
-- MongoDB free cluster : [create an account](https://account.mongodb.com/account/login)
-- MongoDB local interface : [MongoDB Compass (GUI)](https://www.mongodb.com/try/download/compass)
+- MongoDB Atlas (free cluster online) : [create an account](https://account.mongodb.com/account/login)
+- MongoDB Compass (local interface) : [MongoDB Compass (GUI)](https://www.mongodb.com/try/download/compass)
 
 ---
 
@@ -52,7 +52,7 @@ db.createUser({
   user: "username",
   pwd: "password",
   roles: [
-    { role: "readWrite", db: "database-name" }
+    { role: "readWrite", db: "database_name" }
   ]
 })
 ```
@@ -75,7 +75,7 @@ Inside this folder create a file '.env.dev' put :
 ```.env.dev
 PORT = your_front_end_port
 URL_FRONT = your_front_url
-URL_MONGO = 'mongodb://username:password@database_URI/database-name'
+URL_MONGO = 'mongodb://username:password@database_URI/database_name'
 SECRET_KEY = your_jwt_secret_key
 SECURE_COOKIE = false
 ```
